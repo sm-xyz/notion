@@ -1,0 +1,16 @@
+<iframe id="myiframe" width="100%" frameborder="0" src="https://marketing.scalev.id/landing-page-baru"></iframe><script>const iframe=document.getElementById('myiframe')
+        function resizeIframe(height){iframe.style.height=height+'px'}
+        function isUrl(string){try{new URL(string)
+        return true}catch(_){return false}}
+        function isJSONObject(string){try{const parsed=JSON.parse(string)
+        return typeof parsed==='object'&&parsed!==null}catch(e){return false}}
+        function isIframeSameOrigin(){try{const doc=iframe.contentDocument||iframe.contentWindow.document
+        return true}catch(e){return false}}
+        window.addEventListener('message',function(e){if(e.origin==='https://marketing.scalev.id'){if(isUrl(e.data)){location.href=e.data}
+        if(isJSONObject(e.data)&&!isIframeSameOrigin()){const message=JSON.parse(e.data)
+        if(message.type==='resize'){resizeIframe(message.height)}}}},false)
+        document.addEventListener('DOMContentLoaded', function () {var observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {if (entry.isIntersecting) {
+        iframe.src = iframe.src
+        observer.disconnect()}})})
+        observer.observe(iframe)})</script>
