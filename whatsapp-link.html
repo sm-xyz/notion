@@ -35,15 +35,21 @@
             background-color: red;
             color: white;
         }
+        #generateMoreButton {
+            background-color: blue;
+            color: white;
+        }
         #result {
             margin: 20px 0;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
         a {
             color: blue;
             text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
         }
         @media (prefers-color-scheme: dark) {
             body {
@@ -85,7 +91,13 @@
             if (phoneNumber) {
                 var encodedMessage = encodeURIComponent(message);
                 var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
-                resultDiv.innerHTML = `<p><a href="${whatsappLink}" target="_blank">Klik disini untuk membuka WhatsApp</a></p><button id="copyButton" onclick="copyLink()">Copy Link</button>`;
+                resultDiv.innerHTML = `
+                    <p>${whatsappLink}</p>
+                    <div class="button-group">
+                        <button id="copyButton" onclick="copyLink()">Copy Link</button>
+                        <button id="generateMoreButton" onclick="generateMore()">Generate More</button>
+                    </div>
+                `;
             } else {
                 resultDiv.innerHTML = "<p style='color: red;'>Nomor telepon tidak boleh kosong.</p>";
             }
@@ -93,7 +105,7 @@
 
         function copyLink() {
             var resultDiv = document.getElementById("result");
-            var link = resultDiv.querySelector("a").href;
+            var link = resultDiv.querySelector("p").innerText;
             var tempInput = document.createElement("input");
             tempInput.value = link;
             document.body.appendChild(tempInput);
@@ -101,6 +113,12 @@
             document.execCommand("copy");
             document.body.removeChild(tempInput);
             alert("Link telah disalin ke clipboard!");
+        }
+
+        function generateMore() {
+            document.getElementById("phoneNumber").value = "";
+            document.getElementById("message").value = "";
+            document.getElementById("result").innerHTML = "";
         }
     </script>
 
