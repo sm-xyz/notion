@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Link Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.3/dist/index.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -79,7 +80,7 @@
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
-        <button class="format-button" onclick="insertEmoji()">😊</button>
+        <button class="format-button" id="emoji-button">😊</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('underline')"><u>U</u></button>
@@ -88,6 +89,7 @@
 
     <div id="result"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.3/dist/index.umd.min.js"></script>
     <script>
         function formatPhoneNumber(phoneNumber) {
             phoneNumber = phoneNumber.replace(/[-\s+]/g, ''); // Menghapus spasi, tanda strip (-), dan tanda plus (+)
@@ -97,14 +99,37 @@
             return phoneNumber;
         }
 
-        function insertEmoji() {
-            document.getElementById('message').value += '😊';
-            generateLink();
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const picker = new EmojiButton();
+            const button = document.querySelector('#emoji-button');
+            const textarea = document.querySelector('#message');
+
+            picker.on('emoji', emoji => {
+                textarea.value += emoji;
+                generateLink();
+            });
+
+            button.addEventListener('click', () => {
+                picker.togglePicker(button);
+            });
+        });
 
         function formatText(command) {
-            document.getElementById('message').focus();
-            document.execCommand(command, false, null);
+            const textarea = document.getElementById('message');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            if (command === 'bold') {
+                textarea.setRangeText(`*${selectedText}*`, start, end, 'end');
+            } else if (command === 'italic') {
+                textarea.setRangeText(`_${selectedText}_`, start, end, 'end');
+            } else if (command === 'underline') {
+                textarea.setRangeText(`<u>${selectedText}</u>`, start, end, 'end');
+            } else if (command === 'strikeThrough') {
+                textarea.setRangeText(`~${selectedText}~`, start, end, 'end');
+            }
+
             generateLink();
         }
 
