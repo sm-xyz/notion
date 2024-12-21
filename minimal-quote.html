@@ -3,52 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote</title>
-
+    <title>Inspirational Quotes</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #333;
             text-align: center;
         }
-
-        .widget {
+        .widget-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            color: #000;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 80%;
-            margin: auto;
-            font-size: 1.5em;
+            max-width: 600px;
+            width: 100%;
         }
-
-        div {
-            width: 95%;
-            min-height: 100px;
-            background:
-                linear-gradient(to right, black 4px, transparent 4px) 0 0,
-                linear-gradient(to right, black 4px, transparent 4px) 0 100%,
-                linear-gradient(to left, black 4px, transparent 4px) 100% 0,
-                linear-gradient(to left, black 4px, transparent 4px) 100% 100%,
-                linear-gradient(to bottom, black 4px, transparent 4px) 0 0,
-                linear-gradient(to bottom, black 4px, transparent 4px) 100% 0,
-                linear-gradient(to top, black 4px, transparent 4px) 0 100%,
-                linear-gradient(to top, black 4px, transparent 4px) 100% 100%;
-            background-repeat: no-repeat;
-            background-size: 20px 20px;
+        .widget {
+            font-size: 1.2em;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <div class="widget" id="widget"></div>
+    <div class="widget-container">
+        <div class="widget" id="widget"></div>
+    </div>
 
     <script>
         const quotes = [
@@ -84,13 +70,13 @@
             "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari. - Robert Collier",
         ];
 
-        const INTERVAL = 150000; // 5 detik, sesuaikan interval sesuai kebutuhan
+        const INTERVAL = 5000; // 5 detik, sesuaikan interval sesuai kebutuhan
 
         function displayQuote() {
             quotes.forEach((quote, i) => {
                 setTimeout(() => {
                     document.getElementById('widget').innerHTML = quote;
-                }, i * INTERVAL);  
+                }, i * INTERVAL);
             });
         }
 
