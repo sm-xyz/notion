@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Link Generator</title>
+</head>
+<body>
+    <h1>Google Drive Auto Download Link Generator</h1>
+    <p>Masukkan URL file Google Drive untuk mendapatkan link unduhan otomatis:</p>
+    <input type="text" id="fileUrl" placeholder="Masukkan Google Drive URL">
+    <button onclick="generateLink()">Generate Link</button>
+
+    <p id="result"></p>
+
+    <script>
+        function extractFileId(url) {
+            var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
+        function generateLink() {
+            var fileUrl = document.getElementById("fileUrl").value;
+            var fileId = extractFileId(fileUrl);
+
+            if (fileId) {
+                var downloadLink = "https://drive.google.com/uc?export=download&id=" + fileId;
+                document.getElementById("result").innerHTML = "<a href='" + downloadLink + "' target='_blank'>Download File</a>";
+            } else {
+                document.getElementById("result").innerHTML = "URL tidak valid. Pastikan URL mengandung file ID Google Drive yang benar.";
+            }
+        }
+    </script>
+</body>
+</html>
