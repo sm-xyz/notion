@@ -61,6 +61,7 @@
             background-color: #f0f0f0;
         }
         .emoji-picker {
+            display: none;
             margin-top: 10px;
             display: flex;
             justify-content: center;
@@ -69,6 +70,8 @@
         .emoji-picker button {
             margin: 3px;
             cursor: pointer;
+            padding: 5px;
+            font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
         }
         a {
             color: blue;
@@ -93,11 +96,11 @@
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
-        <button class="format-button" onclick="insertEmoji('😊')">😊</button>
+        <button class="format-button" onclick="toggleEmojiPicker()">😊</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
-        <button class="format-button" onclick="removeFormat()">Undo</button>
+        <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
     <div class="emoji-picker" id="emojiPicker">
         <!-- Pilihan emoji yang tampil di dalam tab -->
@@ -132,6 +135,11 @@
             generateLink();
         }
 
+        function toggleEmojiPicker() {
+            const picker = document.getElementById('emojiPicker');
+            picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+        }
+
         function formatText(command) {
             const textarea = document.getElementById('message');
             const start = textarea.selectionStart;
@@ -149,9 +157,16 @@
             generateLink();
         }
 
-        function removeFormat() {
+        function undoLastAction() {
             const textarea = document.getElementById('message');
-            textarea.value = textarea.value.replace(/[*_~]/g, '');
+            const value = textarea.value;
+            const lastChar = value.slice(-1);
+
+            if (lastChar === '*' || lastChar === '_' || lastChar === '~') {
+                textarea.value = value.slice(0, -2); // Remove last format character and the character before it
+            } else {
+                textarea.value = value.slice(0, -1); // Remove last character
+            }
             generateLink();
         }
 
