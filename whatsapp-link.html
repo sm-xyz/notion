@@ -25,6 +25,9 @@
             font-weight: bold;
             width: 100%; /* Full width for mobile feel */
         }
+        input, textarea {
+            font-family: 'Courier New', monospace; /* Mengganti font text yang lebih mudah terbaca */
+        }
         button {
             border: none;
             cursor: pointer;
@@ -39,10 +42,12 @@
         }
         #result {
             margin: 20px 0;
+            word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
         }
         .button-group {
             display: flex;
             justify-content: space-between;
+            margin-top: 10px;
         }
         .format-button {
             padding: 5px 10px;
@@ -75,15 +80,14 @@
 <body>
 
     <h1>WhatsApp Link Generator</h1>
-    <p class="highlight">=> Output otomatis menjadi prefix Indonesia (62) <=</p>
+    <p class="highlight">=> Output otomatis menjadi prefix Indonesia <=</p>
     <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
-    <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini">
+    <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
         <button class="format-button" id="emoji-button">😊</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
-        <button class="format-button" onclick="formatText('underline')"><u>U</u></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
     </div>
 
@@ -124,8 +128,6 @@
                 textarea.setRangeText(`*${selectedText}*`, start, end, 'end');
             } else if (command === 'italic') {
                 textarea.setRangeText(`_${selectedText}_`, start, end, 'end');
-            } else if (command === 'underline') {
-                textarea.setRangeText(`<u>${selectedText}</u>`, start, end, 'end');
             } else if (command === 'strikeThrough') {
                 textarea.setRangeText(`~${selectedText}~`, start, end, 'end');
             }
@@ -140,7 +142,7 @@
 
             phoneNumber = formatPhoneNumber(phoneNumber);
 
-            if (phoneNumber) {
+            if (phoneNumber && message) {
                 var encodedMessage = encodeURIComponent(message);
                 var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
                 resultDiv.innerHTML = `
@@ -151,7 +153,7 @@
                     </div>
                 `;
             } else {
-                resultDiv.innerHTML = "<p style='color: red;'>Nomor telepon tidak boleh kosong.</p>";
+                resultDiv.innerHTML = "";
             }
         }
 
