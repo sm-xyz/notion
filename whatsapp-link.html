@@ -8,7 +8,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 20px;
@@ -62,24 +62,18 @@
             margin-top: 10px;
             flex-wrap: wrap;
         }
+        .emoji-button, .emoji-picker {
+            padding: 0;
+        }
         .emoji-picker button {
             margin: 0;
             padding: 5px;
             font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
         }
-        .emoji-button {
-            position: relative;
-        }
         .emoji-button::after {
             content: '▼';
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
+            margin-left: 5px;
             font-size: 0.75rem;
-        }
-        .emoji-picker button {
-            margin: 0;
         }
         a {
             color: #007bff;
@@ -170,7 +164,7 @@
         function undoLastAction() {
             const textarea = document.getElementById('message');
             const value = textarea.value;
-            const formats = ['*', '_', '~'];
+            const formats = ['**', '__', '~~'];
 
             for (let format of formats) {
                 const pattern = new RegExp(`${format}(.*?)${format}$`);
