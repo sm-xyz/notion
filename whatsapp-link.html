@@ -6,11 +6,10 @@
     <title>WhatsApp Link Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            color: #000;
-            background-color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
             text-align: center;
-            transition: background-color 0.5s, color 0.5s;
             margin: 0;
             padding: 20px;
             max-width: 480px;
@@ -23,8 +22,7 @@
             border: 1px solid #ddd;
             font-weight: bold;
             width: 100%; /* Full width for mobile feel */
-            font-family: 'Verdana', sans-serif; /* Mengganti font input yang lebih mudah terbaca */
-            background-color: #f9f9f9; /* Warna background yang tidak terlalu putih */
+            background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
         }
         button {
@@ -32,17 +30,17 @@
             cursor: pointer;
         }
         #copyButton {
-            background-color: red;
+            background-color: #007bff;
             color: white;
         }
         #resetButton {
-            background-color: blue;
+            background-color: #6c757d;
             color: white;
         }
         #result {
             margin: 20px 0;
             word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
-            color: #004d00; /* Warna font link output hijau tua */
+            color: #007bff;
         }
         .button-group {
             display: flex;
@@ -58,7 +56,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             cursor: pointer;
-            background-color: #f0f0f0;
+            background-color: #e9ecef;
         }
         .emoji-picker {
             display: none;
@@ -74,7 +72,7 @@
             font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
         }
         a {
-            color: blue;
+            color: #007bff;
             text-decoration: none;
         }
         @media (prefers-color-scheme: dark) {
@@ -103,7 +101,7 @@
         <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
     <div class="emoji-picker" id="emojiPicker">
-        <!-- Pilihan emoji yang tampil di dalam tab -->
+        <!-- Pilihan emoji yang tampil di dalam satu baris -->
         <button onclick="insertEmoji('😀')">😀</button>
         <button onclick="insertEmoji('😁')">😁</button>
         <button onclick="insertEmoji('😂')">😂</button>
@@ -162,15 +160,11 @@
         function undoLastAction() {
             const textarea = document.getElementById('message');
             const value = textarea.value;
-            const formats = {
-                '**': 'bold',
-                '_': 'italic',
-                '~': 'strikeThrough'
-            };
+            const formats = ['*', '_', '~'];
 
-            for (let format in formats) {
-                if (value.endsWith(format)) {
-                    textarea.value = value.slice(0, -format.length); // Remove the last format
+            for (let format of formats) {
+                if (value.endsWith(`${format}${format}`)) {
+                    textarea.value = value.slice(0, -2); // Remove the last format
                     break;
                 }
             }
@@ -183,21 +177,27 @@
             var message = document.getElementById("message").value;
             var resultDiv = document.getElementById("result");
 
+            if (!phoneNumber) {
+                alert("Nomor telepon harus diisi.");
+                return;
+            }
+
+            if (!message) {
+                alert("Pesan harus diisi.");
+                return;
+            }
+
             phoneNumber = formatPhoneNumber(phoneNumber);
 
-            if (phoneNumber && message) {
-                var encodedMessage = encodeURIComponent(message);
-                var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
-                resultDiv.innerHTML = `
-                    <p>${whatsappLink}</p>
-                    <div class="button-group">
-                        <button id="copyButton" onclick="copyLink()">Copy Link</button>
-                        <button id="resetButton" onclick="resetForm()">Reset</button>
-                    </div>
-                `;
-            } else {
-                resultDiv.innerHTML = "";
-            }
+            var encodedMessage = encodeURIComponent(message);
+            var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
+            resultDiv.innerHTML = `
+                <p>${whatsappLink}</p>
+                <div class="button-group">
+                    <button id="copyButton" onclick="copyLink()">Copy Link</button>
+                    <button id="resetButton" onclick="resetForm()">Reset</button>
+                </div>
+            `;
         }
 
         function copyLink() {
