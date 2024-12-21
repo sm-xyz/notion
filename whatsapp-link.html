@@ -114,6 +114,7 @@
         <button onclick="insertEmoji('😉')">😉</button>
         <button onclick="insertEmoji('😊')">😊</button>
         <button onclick="insertEmoji('😋')">😋</button>
+        <!-- Tambahkan lebih banyak emoji sesuai kebutuhan -->
     </div>
 
     <div id="result"></div>
@@ -132,6 +133,7 @@
         function insertEmoji(emoji) {
             const textarea = document.getElementById('message');
             textarea.value += emoji;
+            toggleEmojiPicker(); // Hide picker setelah memilih emoji
             generateLink();
         }
 
@@ -160,13 +162,19 @@
         function undoLastAction() {
             const textarea = document.getElementById('message');
             const value = textarea.value;
-            const lastChar = value.slice(-1);
+            const formats = {
+                '**': 'bold',
+                '_': 'italic',
+                '~': 'strikeThrough'
+            };
 
-            if (lastChar === '*' || lastChar === '_' || lastChar === '~') {
-                textarea.value = value.slice(0, -2); // Remove last format character and the character before it
-            } else {
-                textarea.value = value.slice(0, -1); // Remove last character
+            for (let format in formats) {
+                if (value.endsWith(format)) {
+                    textarea.value = value.slice(0, -format.length); // Remove the last format
+                    break;
+                }
             }
+
             generateLink();
         }
 
