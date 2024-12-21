@@ -13,6 +13,8 @@
             transition: background-color 0.5s, color 0.5s;
             margin: 0;
             padding: 20px;
+            max-width: 480px;
+            margin: auto; /* Ensure the layout is centered and looks mobile on desktop */
         }
         input, button, textarea {
             padding: 10px;
@@ -20,8 +22,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             font-weight: bold;
-            width: 80%;
-            max-width: 500px;
+            width: 100%; /* Full width for mobile feel */
         }
         button {
             border: none;
@@ -44,8 +45,13 @@
         }
         .button-group {
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Stack buttons vertically */
             gap: 10px;
+        }
+        .highlight {
+            background-color: yellow;
+            padding: 5px;
+            border-radius: 5px;
         }
         a {
             color: blue;
@@ -65,7 +71,7 @@
 <body>
 
     <h1>WhatsApp Link Generator</h1>
-    <p>=> Output otomatis menjadi prefix Indonesia (62) <=</p>
+    <p class="highlight">=> Output otomatis menjadi prefix Indonesia (62) <=</p>
     <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini"></textarea>
