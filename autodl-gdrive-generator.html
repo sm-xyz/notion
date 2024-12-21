@@ -6,13 +6,20 @@
     <title>Google Drive Link Generator</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             color: #000;
             background-color: #fff;
+            text-align: center;
             transition: background-color 0.5s, color 0.5s;
+            margin: 0;
+            padding: 20px;
         }
         input, button {
             padding: 10px;
             margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-weight: bold;
         }
         button {
             border: none;
@@ -30,10 +37,23 @@
             background-color: blue;
             color: white;
         }
+        #result {
+            margin: 20px 0;
+        }
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
         @media (prefers-color-scheme: dark) {
             body {
                 color: #fff;
                 background-color: #333;
+            }
+            input, button {
+                border: 1px solid #555;
             }
         }
     </style>
