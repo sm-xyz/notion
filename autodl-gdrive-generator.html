@@ -12,6 +12,7 @@
     <button onclick="generateLink()">Generate Link</button>
 
     <p id="result"></p>
+    <button id="copyButton" onclick="copyLink()">Copy Link</button>
 
     <script>
         function extractFileId(url) {
@@ -25,9 +26,24 @@
 
             if (fileId) {
                 var downloadLink = "https://drive.google.com/uc?export=download&id=" + fileId;
-                document.getElementById("result").innerHTML = "<a href='" + downloadLink + "' target='_blank'>Download File</a>";
+                document.getElementById("result").innerHTML = "<a href='" + downloadLink + "' target='_blank'>" + downloadLink + "</a>";
             } else {
                 document.getElementById("result").innerHTML = "URL tidak valid. Pastikan URL mengandung file ID Google Drive yang benar.";
+            }
+        }
+
+        function copyLink() {
+            var resultElement = document.getElementById("result");
+            if (resultElement.innerText) {
+                var tempInput = document.createElement("input");
+                tempInput.value = resultElement.innerText;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                alert("Link telah disalin ke clipboard!");
+            } else {
+                alert("Tidak ada link yang bisa disalin.");
             }
         }
     </script>
