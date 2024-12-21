@@ -61,6 +61,7 @@
             display: none;
             margin-top: 10px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .emoji-button, .emoji-picker {
             padding: 0;
@@ -69,11 +70,19 @@
             margin: 0;
             padding: 5px;
             font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
+            border: none;
+            background: none;
         }
         .emoji-button::after {
             content: '▼';
             margin-left: 5px;
             font-size: 0.75rem;
+        }
+        .emoji-container {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #ddd;
+            padding: 5px;
         }
         a {
             color: #007bff;
@@ -105,18 +114,20 @@
         <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
     <div class="button-group emoji-picker" id="emojiPicker">
-        <!-- Pilihan emoji yang tampil di dalam satu baris -->
-        <button onclick="insertEmoji('😀')">😀</button>
-        <button onclick="insertEmoji('😁')">😁</button>
-        <button onclick="insertEmoji('😂')">😂</button>
-        <button onclick="insertEmoji('😃')">😃</button>
-        <button onclick="insertEmoji('😄')">😄</button>
-        <button onclick="insertEmoji('😅')">😅</button>
-        <button onclick="insertEmoji('😆')">😆</button>
-        <button onclick="insertEmoji('😉')">😉</button>
-        <button onclick="insertEmoji('😊')">😊</button>
-        <button onclick="insertEmoji('😋')">😋</button>
-        <!-- Tambahkan lebih banyak emoji sesuai kebutuhan -->
+        <div class="emoji-container">
+            <!-- Pilihan emoji yang tampil di dalam satu kotak -->
+            <button onclick="insertEmoji('😀')">😀</button>
+            <button onclick="insertEmoji('😁')">😁</button>
+            <button onclick="insertEmoji('😂')">😂</button>
+            <button onclick="insertEmoji('😃')">😃</button>
+            <button onclick="insertEmoji('😄')">😄</button>
+            <button onclick="insertEmoji('😅')">😅</button>
+            <button onclick="insertEmoji('😆')">😆</button>
+            <button onclick="insertEmoji('😉')">😉</button>
+            <button onclick="insertEmoji('😊')">😊</button>
+            <button onclick="insertEmoji('😋')">😋</button>
+            <!-- Tambahkan lebih banyak emoji sesuai kebutuhan -->
+        </div>
     </div>
 
     <div id="result"></div>
@@ -141,7 +152,7 @@
 
         function toggleEmojiPicker() {
             const picker = document.getElementById('emojiPicker');
-            picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
+            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
         }
 
         function formatText(command) {
@@ -163,13 +174,14 @@
 
         function undoLastAction() {
             const textarea = document.getElementById('message');
-            const value = textarea.value;
-            const formats = ['**', '__', '~~'];
+            let value = textarea.value;
 
+            const formats = ['\\*', '_', '~'];
             for (let format of formats) {
-                const pattern = new RegExp(`${format}(.*?)${format}$`);
+                const pattern = new RegExp(`(${format})(.*?)(${format})$`);
                 if (pattern.test(value)) {
-                    textarea.value = value.replace(pattern, '$1');
+                    value = value.replace(pattern, '$2');
+                    textarea.value = value;
                     break;
                 }
             }
