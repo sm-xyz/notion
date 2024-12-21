@@ -4,12 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Drive Link Generator</title>
+    <style>
+        body {
+            color: #000;
+            background-color: #fff;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        button {
+            border: none;
+            cursor: pointer;
+        }
+        #generateLinkButton {
+            background-color: blue;
+            color: white;
+        }
+        #copyButton {
+            background-color: red;
+            color: white;
+        }
+        #generateMoreButton {
+            background-color: blue;
+            color: white;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #fff;
+                background-color: #333;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Google Drive Auto Download Link Generator</h1>
     <p>Masukkan URL file Google Drive untuk mendapatkan link unduhan otomatis:</p>
     <input type="text" id="fileUrl" placeholder="Masukkan Google Drive URL">
-    <button onclick="generateLink()">Generate Link</button>
+    <button id="generateLinkButton" onclick="generateLink()">Generate Link</button>
 
     <p id="result"></p>
     <button id="copyButton" style="display:none;" onclick="copyLink()">Copy Link</button>
