@@ -4,79 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Link Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #333;
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: #fff;
             text-align: center;
+            transition: background-color 0.5s, color 0.5s;
+            margin: 0;
+            padding: 20px;
         }
-        .container {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 700px;
-            width: 90%;
-        }
-        input, textarea {
-            width: 100%;
+        input, button, textarea {
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
+            margin: 5px;
             border-radius: 5px;
-            font-size: 1em;
+            border: 1px solid #ddd;
+            font-weight: bold;
+            width: 80%;
+            max-width: 500px;
         }
         button {
-            padding: 10px 20px;
-            background-color: #25D366;
-            color: #fff;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            margin-top: 10px;
         }
-        button:hover {
-            background-color: #1ebe5b;
+        #generateLinkButton {
+            background-color: blue;
+            color: white;
         }
-        .result {
-            margin-top: 20px;
+        #copyButton {
+            background-color: red;
+            color: white;
         }
-        .result a {
-            color: #25D366;
+        #result {
+            margin: 20px 0;
+        }
+        a {
+            color: blue;
             text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #fff;
+                background-color: #333;
+            }
+            input, button, textarea {
+                border: 1px solid #555;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>WhatsApp Link Generator</h1>
-        <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
-        <input type="text" id="phoneNumber" placeholder="Nomor Telepon (contoh: 628123456789)">
-        <textarea id="message" rows="4" placeholder="Pesan"></textarea>
-        <button onclick="generateLink()">Generate Link</button>
+    <h1>WhatsApp Link Generator</h1>
+    <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
+    <input type="text" id="phoneNumber" placeholder="Nomor Telepon (contoh: 08123456789)">
+    <textarea id="message" rows="4" placeholder="Pesan"></textarea>
+    <button id="generateLinkButton" onclick="generateLink()">Generate Link</button>
 
-        <div class="result" id="result"></div>
-    </div>
+    <div id="result"></div>
 
     <script>
+        function formatPhoneNumber(phoneNumber) {
+            phoneNumber = phoneNumber.replace(/[-\s+]/g, ''); // Menghapus spasi, tanda strip (-), dan tanda plus (+)
+            if (phoneNumber.startsWith('0')) {
+                phoneNumber = '62' + phoneNumber.slice(1); // Mengubah prefix nol menjadi +62
+            }
+            return phoneNumber;
+        }
+
         function generateLink() {
             var phoneNumber = document.getElementById("phoneNumber").value;
             var message = document.getElementById("message").value;
             var resultDiv = document.getElementById("result");
 
+            phoneNumber = formatPhoneNumber(phoneNumber);
+
             if (phoneNumber) {
                 var encodedMessage = encodeURIComponent(message);
                 var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
-                resultDiv.innerHTML = `<p><a href="${whatsappLink}" target="_blank">Klik disini untuk membuka WhatsApp</a></p><button onclick="copyLink()">Copy Link</button>`;
+                resultDiv.innerHTML = `<p><a href="${whatsappLink}" target="_blank">Klik disini untuk membuka WhatsApp</a></p><button id="copyButton" onclick="copyLink()">Copy Link</button>`;
             } else {
                 resultDiv.innerHTML = "<p style='color: red;'>Nomor telepon tidak boleh kosong.</p>";
             }
