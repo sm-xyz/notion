@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,22 +6,32 @@
     <title>Quote</title>
 
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
 
         .widget {
-            padding: 5px 5px ;
-            color: #000000;
-            text-align: center;
-                max-width: 95%;
+            padding: 20px;
+            color: #000;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
             margin: auto;
-            font-variant-caps: petite-caps;
-            font-size: 2em;
-
+            font-size: 1.5em;
         }
 
         div {
-             width: 95%;
-             min-height: 100px;
-
+            width: 95%;
+            min-height: 100px;
             background:
                 linear-gradient(to right, black 4px, transparent 4px) 0 0,
                 linear-gradient(to right, black 4px, transparent 4px) 0 100%,
@@ -32,73 +41,66 @@
                 linear-gradient(to bottom, black 4px, transparent 4px) 100% 0,
                 linear-gradient(to top, black 4px, transparent 4px) 0 100%,
                 linear-gradient(to top, black 4px, transparent 4px) 100% 100%;
-
             background-repeat: no-repeat;
             background-size: 20px 20px;
-}
-
-     
+        }
     </style>
 </head>
 <body>
 
     <div class="widget" id="widget"></div>
 
+    <script>
+        const quotes = [
+            "Kesempatan tidak pernah hilang; seseorang akan mengambil kesempatan yang kamu lewatkan. - Andy Rooney",
+            "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar. - Jack Ma",
+            "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan. - Steve Jobs",
+            "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
+            "Ketika sesuatu cukup penting, kamu akan melakukannya meskipun peluangnya tidak mendukung. - Elon Musk",
+            "Kesuksesan biasanya datang kepada mereka yang terlalu sibuk untuk mencarinya. - Henry David Thoreau",
+            "Jangan menunggu sampai besi panas, buatlah panas dengan memukulnya. - William Butler Yeats",
+            "Ini bukan tentang ide, tetapi tentang mewujudkan ide tersebut. - Scott Belsky",
+            "Cara untuk memulai adalah berhenti berbicara dan mulai melakukannya. - Walt Disney",
+            "Masa depan milik mereka yang percaya pada keindahan impian mereka. - Eleanor Roosevelt",
+            "Jika kamu tidak mau mengambil risiko yang biasa, kamu harus puas dengan yang biasa. - Jim Rohn",
+            "Kesuksesan adalah berjalan dari kegagalan ke kegagalan tanpa kehilangan semangat. - Winston Churchill",
+            "Saya menemukan bahwa semakin keras saya bekerja, semakin banyak keberuntungan yang saya dapat. - Thomas Jefferson",
+            "Saya tidak pernah bermimpi tentang kesuksesan. Saya bekerja untuk itu. - Estée Lauder",
+            "Kesuksesan bukanlah seberapa tinggi kamu mendaki, tetapi seberapa besar dampak positif yang kamu buat di dunia. - Roy T. Bennett",
+            "Pelangganmu yang paling tidak bahagia adalah sumber pembelajaran terbesar. - Bill Gates",
+            "Di tengah setiap kesulitan terdapat kesempatan. - Albert Einstein",
+            "Satu-satunya batasan dalam mewujudkan masa depan kita adalah keraguan kita hari ini. - Franklin D. Roosevelt",
+            "Orang yang tidak pernah membuat kesalahan tidak pernah mencoba hal baru. - Albert Einstein",
+            "Cara terbaik untuk memprediksi masa depan adalah dengan menciptakannya. - Abraham Lincoln",
+            "Kesulitan seringkali mempersiapkan orang biasa untuk takdir yang luar biasa. - C.S. Lewis",
+            "Untuk sukses dalam hidup, kamu membutuhkan dua hal: ketidaktahuan dan rasa percaya diri. - Mark Twain",
+            "Kesempatan tidak datang begitu saja, kamu yang harus menciptakannya. - Chris Grosser",
+            "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
+            "Waktumu terbatas, jadi jangan sia-siakan hidupmu dengan menjalani hidup orang lain. - Steve Jobs",
+            "Jika kamu ingin meraih kebesaran, berhentilah meminta izin. - Anonim",
+            "Kamu melewatkan 100% kesempatan yang tidak kamu ambil. - Wayne Gretzky",
+            "Balas dendam terbaik adalah kesuksesan besar. - Frank Sinatra",
+            "Segalanya tampak mustahil sampai akhirnya terwujud. - Nelson Mandela",
+            "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari. - Robert Collier",
+        ];
 
-<script>
+        const INTERVAL = 150000; // 5 detik, sesuaikan interval sesuai kebutuhan
 
-quotes=[
-    "Kesempatan tidak pernah hilang; seseorang akan mengambil kesempatan yang kamu lewatkan. - Andy Rooney",
-    "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar. - Jack Ma",
-    "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan. - Steve Jobs",
-    "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
-    "Ketika sesuatu cukup penting, kamu akan melakukannya meskipun peluangnya tidak mendukung. - Elon Musk",
-    "Kesuksesan biasanya datang kepada mereka yang terlalu sibuk untuk mencarinya. - Henry David Thoreau",
-    "Jangan menunggu sampai besi panas, buatlah panas dengan memukulnya. - William Butler Yeats",
-    "Ini bukan tentang ide, tetapi tentang mewujudkan ide tersebut. - Scott Belsky",
-    "Cara untuk memulai adalah berhenti berbicara dan mulai melakukannya. - Walt Disney",
-    "Masa depan milik mereka yang percaya pada keindahan impian mereka. - Eleanor Roosevelt",
-    "Jika kamu tidak mau mengambil risiko yang biasa, kamu harus puas dengan yang biasa. - Jim Rohn",
-    "Kesuksesan adalah berjalan dari kegagalan ke kegagalan tanpa kehilangan semangat. - Winston Churchill",
-    "Saya menemukan bahwa semakin keras saya bekerja, semakin banyak keberuntungan yang saya dapat. - Thomas Jefferson",
-    "Saya tidak pernah bermimpi tentang kesuksesan. Saya bekerja untuk itu. - Estée Lauder",
-    "Kesuksesan bukanlah seberapa tinggi kamu mendaki, tetapi seberapa besar dampak positif yang kamu buat di dunia. - Roy T. Bennett",
-    "Pelangganmu yang paling tidak bahagia adalah sumber pembelajaran terbesar. - Bill Gates",
-    "Di tengah setiap kesulitan terdapat kesempatan. - Albert Einstein",
-    "Satu-satunya batasan dalam mewujudkan masa depan kita adalah keraguan kita hari ini. - Franklin D. Roosevelt",
-    "Orang yang tidak pernah membuat kesalahan tidak pernah mencoba hal baru. - Albert Einstein",
-    "Cara terbaik untuk memprediksi masa depan adalah dengan menciptakannya. - Abraham Lincoln",
-    "Kesulitan seringkali mempersiapkan orang biasa untuk takdir yang luar biasa. - C.S. Lewis",
-    "Untuk sukses dalam hidup, kamu membutuhkan dua hal: ketidaktahuan dan rasa percaya diri. - Mark Twain",
-    "Kesempatan tidak datang begitu saja, kamu yang harus menciptakannya. - Chris Grosser",
-    "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
-    "Waktumu terbatas, jadi jangan sia-siakan hidupmu dengan menjalani hidup orang lain. - Steve Jobs",
-    "Jika kamu ingin meraih kebesaran, berhentilah meminta izin. - Anonim",
-    "Kamu melewatkan 100% kesempatan yang tidak kamu ambil. - Wayne Gretzky",
-    "Balas dendam terbaik adalah kesuksesan besar. - Frank Sinatra",
-    "Segalanya tampak mustahil sampai akhirnya terwujud. - Nelson Mandela",
-    "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari. - Robert Collier",
-];
+        function displayQuote() {
+            quotes.forEach((quote, i) => {
+                setTimeout(() => {
+                    document.getElementById('widget').innerHTML = quote;
+                }, i * INTERVAL);  
+            });
+        }
 
-const INTERVAL = 21600000;
+        function displayWidget() {
+            displayQuote();
+            setTimeout(displayWidget, quotes.length * INTERVAL);
+        }
 
-function displayQuote(){
-
-    document.getElementById('widget').innerHTML =quotes[0];
-    quotes.forEach((quote, i) => {
-        setTimeout(() => {
-            document.getElementById('widget').innerHTML =quote;
-        }, i * INTERVAL);  
-    });
-    }
-
-    function displayWidget() {
-        displayQuote();
-        setTimeout(dispalyWidget, quotes.length*INTERVAL);
-    }
-    displayWidget()
-
-</script>
+        displayWidget();
+    </script>
 
 </body>
 </html>
