@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #00B4DB, #0083B0); /* Gradasi biru */
+            background: linear-gradient(to right, #4facfe, #00f2fe); /* Gradasi biru */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,20 +19,20 @@
         }
         .widget-container {
             background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 700px;
             width: 90%;
         }
         .widget {
-            font-size: 1.2em;
+            font-size: 1.4em;
             line-height: 1.6;
         }
         .author {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #ffbf00;
+            margin-top: 15px;
+            font-size: 1em;
+            color: #ffd700;
         }
     </style>
 </head>
@@ -76,7 +76,7 @@
             { text: "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari.", author: "Robert Collier" },
         ];
 
-        const INTERVAL = 5000; // 5 detik, sesuaikan interval sesuai kebutuhan
+        const INTERVAL = 60000; // 1 menit
 
         function displayQuote() {
             quotes.forEach((quote, i) => {
