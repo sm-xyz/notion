@@ -24,9 +24,9 @@
             border: 1px solid #ddd;
             font-weight: bold;
             width: 100%; /* Full width for mobile feel */
-        }
-        input, textarea {
-            font-family: 'Courier New', monospace; /* Mengganti font text yang lebih mudah terbaca */
+            font-family: 'Verdana', sans-serif; /* Mengganti font input yang lebih mudah terbaca */
+            background-color: #f9f9f9; /* Warna background yang tidak terlalu putih */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
         }
         button {
             border: none;
@@ -43,6 +43,7 @@
         #result {
             margin: 20px 0;
             word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
+            color: #1a237e; /* Warna font link output biru tua */
         }
         .button-group {
             display: flex;
@@ -73,6 +74,7 @@
             }
             input, button, textarea {
                 border: 1px solid #555;
+                background-color: #444; /* Menyesuaikan background warna form input di mode gelap */
             }
         }
     </style>
