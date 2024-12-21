@@ -52,7 +52,6 @@
         .format-button, .emoji-picker button {
             flex: 1; /* Membagi kolom secara proporsional */
             padding: 5px 10px;
-            margin: 5px;
             border-radius: 5px;
             border: 1px solid #ddd;
             cursor: pointer;
@@ -64,10 +63,23 @@
             flex-wrap: wrap;
         }
         .emoji-picker button {
-            margin: 3px;
-            cursor: pointer;
+            margin: 0;
             padding: 5px;
             font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
+        }
+        .emoji-button {
+            position: relative;
+        }
+        .emoji-button::after {
+            content: '▼';
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+        }
+        .emoji-picker button {
+            margin: 0;
         }
         a {
             color: #007bff;
@@ -92,7 +104,7 @@
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
-        <button class="format-button" onclick="toggleEmojiPicker()">😊</button>
+        <button class="format-button emoji-button" onclick="toggleEmojiPicker()">😊</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
@@ -161,8 +173,9 @@
             const formats = ['*', '_', '~'];
 
             for (let format of formats) {
-                if (value.endsWith(`${format}${format}`)) {
-                    textarea.value = value.slice(0, -2); // Remove the last format
+                const pattern = new RegExp(`${format}(.*?)${format}$`);
+                if (pattern.test(value)) {
+                    textarea.value = value.replace(pattern, '$1');
                     break;
                 }
             }
