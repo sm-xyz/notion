@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Link Generator</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.3/dist/index.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,12 +46,13 @@
         }
         .button-group {
             display: flex;
-            justify-content: center; /* Rata tengah tombol */
-            gap: 10px; /* Jarak antar tombol */
-            flex-wrap: wrap; /* Membuat tombol berbaris rapi jika tidak muat dalam satu baris */
+            justify-content: space-between;
+            gap: 5px; /* Jarak antar tombol */
+            flex-wrap: nowrap; /* Membuat tombol dalam satu baris */
             margin-top: 10px;
         }
         .format-button {
+            flex: 1; /* Membagi kolom secara proporsional */
             padding: 5px 10px;
             margin: 5px;
             border-radius: 5px;
@@ -60,10 +60,15 @@
             cursor: pointer;
             background-color: #f0f0f0;
         }
-        .highlight {
-            background-color: yellow;
-            padding: 5px;
-            border-radius: 5px;
+        .emoji-picker {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .emoji-picker button {
+            margin: 3px;
+            cursor: pointer;
         }
         a {
             color: blue;
@@ -84,44 +89,48 @@
 <body>
 
     <h1>WhatsApp Link Generator</h1>
-    <p class="highlight">=> Output otomatis menjadi prefix Indonesia <=</p>
     <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
-        <button class="format-button" id="emoji-button">😊</button>
+        <button class="format-button" onclick="insertEmoji('😊')">😊</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
+        <button class="format-button" onclick="removeFormat()">Undo</button>
+    </div>
+    <div class="emoji-picker" id="emojiPicker">
+        <!-- Pilihan emoji yang tampil di dalam tab -->
+        <button onclick="insertEmoji('😀')">😀</button>
+        <button onclick="insertEmoji('😁')">😁</button>
+        <button onclick="insertEmoji('😂')">😂</button>
+        <button onclick="insertEmoji('😃')">😃</button>
+        <button onclick="insertEmoji('😄')">😄</button>
+        <button onclick="insertEmoji('😅')">😅</button>
+        <button onclick="insertEmoji('😆')">😆</button>
+        <button onclick="insertEmoji('😉')">😉</button>
+        <button onclick="insertEmoji('😊')">😊</button>
+        <button onclick="insertEmoji('😋')">😋</button>
     </div>
 
     <div id="result"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@3.0.0/dist/index.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-mart@3.0.0/dist/emoji-mart.css">
     <script>
         function formatPhoneNumber(phoneNumber) {
             phoneNumber = phoneNumber.replace(/[-\s+]/g, ''); // Menghapus spasi, tanda strip (-), dan tanda plus (+)
             if (phoneNumber.startsWith('0')) {
                 phoneNumber = '62' + phoneNumber.slice(1); // Mengubah prefix nol menjadi +62
+            } else if (!phoneNumber.startsWith('62')) {
+                phoneNumber = phoneNumber; // Tidak mengubah prefix negara lain
             }
             return phoneNumber;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const picker = new EmojiButton();
-            const button = document.querySelector('#emoji-button');
-            const textarea = document.querySelector('#message');
-
-            picker.on('emoji', emoji => {
-                textarea.value += emoji.native;
-                generateLink();
-            });
-
-            button.addEventListener('click', () => {
-                picker.togglePicker(button);
-            });
-        });
+        function insertEmoji(emoji) {
+            const textarea = document.getElementById('message');
+            textarea.value += emoji;
+            generateLink();
+        }
 
         function formatText(command) {
             const textarea = document.getElementById('message');
@@ -137,6 +146,12 @@
                 textarea.setRangeText(`~${selectedText}~`, start, end, 'end');
             }
 
+            generateLink();
+        }
+
+        function removeFormat() {
+            const textarea = document.getElementById('message');
+            textarea.value = textarea.value.replace(/[*_~]/g, '');
             generateLink();
         }
 
