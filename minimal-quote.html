@@ -4,29 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspirational Quotes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #00c6ff, #ff944d); /* Gradasi biru dan oranye */
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #00B4DB, #0083B0); /* Gradasi biru */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            color: #333;
+            color: #fff;
             text-align: center;
         }
         .widget-container {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 30px;
             max-width: 600px;
-            width: 100%;
+            width: 90%;
         }
         .widget {
             font-size: 1.2em;
-            line-height: 1.4;
+            line-height: 1.6;
+        }
+        .author {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #ffbf00;
         }
     </style>
 </head>
@@ -38,44 +44,47 @@
 
     <script>
         const quotes = [
-            "Kesempatan tidak pernah hilang; seseorang akan mengambil kesempatan yang kamu lewatkan. - Andy Rooney",
-            "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar. - Jack Ma",
-            "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan. - Steve Jobs",
-            "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
-            "Ketika sesuatu cukup penting, kamu akan melakukannya meskipun peluangnya tidak mendukung. - Elon Musk",
-            "Kesuksesan biasanya datang kepada mereka yang terlalu sibuk untuk mencarinya. - Henry David Thoreau",
-            "Jangan menunggu sampai besi panas, buatlah panas dengan memukulnya. - William Butler Yeats",
-            "Ini bukan tentang ide, tetapi tentang mewujudkan ide tersebut. - Scott Belsky",
-            "Cara untuk memulai adalah berhenti berbicara dan mulai melakukannya. - Walt Disney",
-            "Masa depan milik mereka yang percaya pada keindahan impian mereka. - Eleanor Roosevelt",
-            "Jika kamu tidak mau mengambil risiko yang biasa, kamu harus puas dengan yang biasa. - Jim Rohn",
-            "Kesuksesan adalah berjalan dari kegagalan ke kegagalan tanpa kehilangan semangat. - Winston Churchill",
-            "Saya menemukan bahwa semakin keras saya bekerja, semakin banyak keberuntungan yang saya dapat. - Thomas Jefferson",
-            "Saya tidak pernah bermimpi tentang kesuksesan. Saya bekerja untuk itu. - Estée Lauder",
-            "Kesuksesan bukanlah seberapa tinggi kamu mendaki, tetapi seberapa besar dampak positif yang kamu buat di dunia. - Roy T. Bennett",
-            "Pelangganmu yang paling tidak bahagia adalah sumber pembelajaran terbesar. - Bill Gates",
-            "Di tengah setiap kesulitan terdapat kesempatan. - Albert Einstein",
-            "Satu-satunya batasan dalam mewujudkan masa depan kita adalah keraguan kita hari ini. - Franklin D. Roosevelt",
-            "Orang yang tidak pernah membuat kesalahan tidak pernah mencoba hal baru. - Albert Einstein",
-            "Cara terbaik untuk memprediksi masa depan adalah dengan menciptakannya. - Abraham Lincoln",
-            "Kesulitan seringkali mempersiapkan orang biasa untuk takdir yang luar biasa. - C.S. Lewis",
-            "Untuk sukses dalam hidup, kamu membutuhkan dua hal: ketidaktahuan dan rasa percaya diri. - Mark Twain",
-            "Kesempatan tidak datang begitu saja, kamu yang harus menciptakannya. - Chris Grosser",
-            "Jangan takut melepaskan yang baik untuk mengejar yang hebat. - John D. Rockefeller",
-            "Waktumu terbatas, jadi jangan sia-siakan hidupmu dengan menjalani hidup orang lain. - Steve Jobs",
-            "Jika kamu ingin meraih kebesaran, berhentilah meminta izin. - Anonim",
-            "Kamu melewatkan 100% kesempatan yang tidak kamu ambil. - Wayne Gretzky",
-            "Balas dendam terbaik adalah kesuksesan besar. - Frank Sinatra",
-            "Segalanya tampak mustahil sampai akhirnya terwujud. - Nelson Mandela",
-            "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari. - Robert Collier",
+            { text: "Kesempatan tidak pernah hilang; seseorang akan mengambil kesempatan yang kamu lewatkan.", author: "Andy Rooney" },
+            { text: "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar.", author: "Jack Ma" },
+            { text: "Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
+            { text: "Jangan takut melepaskan yang baik untuk mengejar yang hebat.", author: "John D. Rockefeller" },
+            { text: "Ketika sesuatu cukup penting, kamu akan melakukannya meskipun peluangnya tidak mendukung.", author: "Elon Musk" },
+            { text: "Kesuksesan biasanya datang kepada mereka yang terlalu sibuk untuk mencarinya.", author: "Henry David Thoreau" },
+            { text: "Jangan menunggu sampai besi panas, buatlah panas dengan memukulnya.", author: "William Butler Yeats" },
+            { text: "Ini bukan tentang ide, tetapi tentang mewujudkan ide tersebut.", author: "Scott Belsky" },
+            { text: "Cara untuk memulai adalah berhenti berbicara dan mulai melakukannya.", author: "Walt Disney" },
+            { text: "Masa depan milik mereka yang percaya pada keindahan impian mereka.", author: "Eleanor Roosevelt" },
+            { text: "Jika kamu tidak mau mengambil risiko yang biasa, kamu harus puas dengan yang biasa.", author: "Jim Rohn" },
+            { text: "Kesuksesan adalah berjalan dari kegagalan ke kegagalan tanpa kehilangan semangat.", author: "Winston Churchill" },
+            { text: "Saya menemukan bahwa semakin keras saya bekerja, semakin banyak keberuntungan yang saya dapat.", author: "Thomas Jefferson" },
+            { text: "Saya tidak pernah bermimpi tentang kesuksesan. Saya bekerja untuk itu.", author: "Estée Lauder" },
+            { text: "Kesuksesan bukanlah seberapa tinggi kamu mendaki, tetapi seberapa besar dampak positif yang kamu buat di dunia.", author: "Roy T. Bennett" },
+            { text: "Pelangganmu yang paling tidak bahagia adalah sumber pembelajaran terbesar.", author: "Bill Gates" },
+            { text: "Di tengah setiap kesulitan terdapat kesempatan.", author: "Albert Einstein" },
+            { text: "Satu-satunya batasan dalam mewujudkan masa depan kita adalah keraguan kita hari ini.", author: "Franklin D. Roosevelt" },
+            { text: "Orang yang tidak pernah membuat kesalahan tidak pernah mencoba hal baru.", author: "Albert Einstein" },
+            { text: "Cara terbaik untuk memprediksi masa depan adalah dengan menciptakannya.", author: "Abraham Lincoln" },
+            { text: "Kesulitan seringkali mempersiapkan orang biasa untuk takdir yang luar biasa.", author: "C.S. Lewis" },
+            { text: "Untuk sukses dalam hidup, kamu membutuhkan dua hal: ketidaktahuan dan rasa percaya diri.", author: "Mark Twain" },
+            { text: "Kesempatan tidak datang begitu saja, kamu yang harus menciptakannya.", author: "Chris Grosser" },
+            { text: "Jangan takut melepaskan yang baik untuk mengejar yang hebat.", author: "John D. Rockefeller" },
+            { text: "Waktumu terbatas, jadi jangan sia-siakan hidupmu dengan menjalani hidup orang lain.", author: "Steve Jobs" },
+            { text: "Jika kamu ingin meraih kebesaran, berhentilah meminta izin.", author: "Anonim" },
+            { text: "Kamu melewatkan 100% kesempatan yang tidak kamu ambil.", author: "Wayne Gretzky" },
+            { text: "Balas dendam terbaik adalah kesuksesan besar.", author: "Frank Sinatra" },
+            { text: "Segalanya tampak mustahil sampai akhirnya terwujud.", author: "Nelson Mandela" },
+            { text: "Kesuksesan adalah hasil dari usaha kecil yang dilakukan berulang kali setiap hari.", author: "Robert Collier" },
         ];
 
-        const INTERVAL = 150000; // 5 detik, sesuaikan interval sesuai kebutuhan
+        const INTERVAL = 5000; // 5 detik, sesuaikan interval sesuai kebutuhan
 
         function displayQuote() {
             quotes.forEach((quote, i) => {
                 setTimeout(() => {
-                    document.getElementById('widget').innerHTML = quote;
+                    document.getElementById('widget').innerHTML = `
+                        <div>${quote.text}</div>
+                        <div class="author">- ${quote.author}</div>
+                    `;
                 }, i * INTERVAL);
             });
         }
