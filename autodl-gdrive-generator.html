@@ -12,7 +12,8 @@
     <button onclick="generateLink()">Generate Link</button>
 
     <p id="result"></p>
-    <button id="copyButton" onclick="copyLink()">Copy Link</button>
+    <button id="copyButton" style="display:none;" onclick="copyLink()">Copy Link</button>
+    <button id="generateMoreButton" style="display:none;" onclick="generateMore()">Generate More</button>
 
     <script>
         function extractFileId(url) {
@@ -27,8 +28,12 @@
             if (fileId) {
                 var downloadLink = "https://drive.google.com/uc?export=download&id=" + fileId;
                 document.getElementById("result").innerHTML = "<a href='" + downloadLink + "' target='_blank'>" + downloadLink + "</a>";
+                document.getElementById("copyButton").style.display = "inline";
+                document.getElementById("generateMoreButton").style.display = "inline";
             } else {
                 document.getElementById("result").innerHTML = "URL tidak valid. Pastikan URL mengandung file ID Google Drive yang benar.";
+                document.getElementById("copyButton").style.display = "none";
+                document.getElementById("generateMoreButton").style.display = "none";
             }
         }
 
@@ -45,6 +50,13 @@
             } else {
                 alert("Tidak ada link yang bisa disalin.");
             }
+        }
+
+        function generateMore() {
+            document.getElementById("fileUrl").value = "";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("copyButton").style.display = "none";
+            document.getElementById("generateMoreButton").style.display = "none";
         }
     </script>
 </body>
