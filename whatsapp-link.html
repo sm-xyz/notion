@@ -49,7 +49,7 @@
             flex-wrap: nowrap; /* Membuat tombol dalam satu baris */
             margin-top: 10px;
         }
-        .format-button {
+        .format-button, .emoji-picker button {
             flex: 1; /* Membagi kolom secara proporsional */
             padding: 5px 10px;
             margin: 5px;
@@ -61,8 +61,6 @@
         .emoji-picker {
             display: none;
             margin-top: 10px;
-            display: flex;
-            justify-content: center;
             flex-wrap: wrap;
         }
         .emoji-picker button {
@@ -100,7 +98,7 @@
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
         <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
-    <div class="emoji-picker" id="emojiPicker">
+    <div class="button-group emoji-picker" id="emojiPicker">
         <!-- Pilihan emoji yang tampil di dalam satu baris -->
         <button onclick="insertEmoji('😀')">😀</button>
         <button onclick="insertEmoji('😁')">😁</button>
@@ -176,16 +174,6 @@
             var phoneNumber = document.getElementById("phoneNumber").value;
             var message = document.getElementById("message").value;
             var resultDiv = document.getElementById("result");
-
-            if (!phoneNumber) {
-                alert("Nomor telepon harus diisi.");
-                return;
-            }
-
-            if (!message) {
-                alert("Pesan harus diisi.");
-                return;
-            }
 
             phoneNumber = formatPhoneNumber(phoneNumber);
 
