@@ -55,16 +55,14 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             cursor: pointer;
-            background-color: #e9ecef;
+            background-color: transparent;
         }
         .emoji-picker {
             display: none;
             margin-top: 10px;
             flex-wrap: wrap;
             justify-content: center;
-        }
-        .emoji-button, .emoji-picker {
-            padding: 0;
+            background-color: transparent;
         }
         .emoji-picker button {
             margin: 0;
@@ -83,6 +81,7 @@
             flex-wrap: wrap;
             border: 1px solid #ddd;
             padding: 5px;
+            background-color: transparent;
         }
         a {
             color: #007bff;
@@ -107,7 +106,7 @@
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
     <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
     <div class="button-group">
-        <button class="format-button emoji-button" onclick="toggleEmojiPicker()">😊</button>
+        <button class="format-button emoji-button" onclick="toggleEmojiPicker()">Emoji</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
@@ -176,11 +175,15 @@
             const textarea = document.getElementById('message');
             let value = textarea.value;
 
-            const formats = ['\\*', '_', '~'];
-            for (let format of formats) {
-                const pattern = new RegExp(`(${format})(.*?)(${format})$`);
-                if (pattern.test(value)) {
-                    value = value.replace(pattern, '$2');
+            const formatPatterns = [
+                { pattern: /\*\*([^*]+)\*\*/, replacement: '$1' },
+                { pattern: /__([^_]+)__/, replacement: '$1' },
+                { pattern: /~~([^~]+)~~/, replacement: '$1' }
+            ];
+
+            for (let format of formatPatterns) {
+                if (format.pattern.test(value)) {
+                    value = value.replace(format.pattern, format.replacement);
                     textarea.value = value;
                     break;
                 }
