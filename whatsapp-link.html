@@ -28,15 +28,11 @@
             border: none;
             cursor: pointer;
         }
-        #generateLinkButton {
-            background-color: blue;
-            color: white;
-        }
         #copyButton {
             background-color: red;
             color: white;
         }
-        #generateMoreButton {
+        #resetButton {
             background-color: blue;
             color: white;
         }
@@ -45,8 +41,15 @@
         }
         .button-group {
             display: flex;
-            flex-direction: column; /* Stack buttons vertically */
-            gap: 10px;
+            justify-content: space-between;
+        }
+        .format-button {
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            background-color: #f0f0f0;
         }
         .highlight {
             background-color: yellow;
@@ -74,8 +77,14 @@
     <p class="highlight">=> Output otomatis menjadi prefix Indonesia (62) <=</p>
     <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
     <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini">
-    <textarea id="message" rows="4" placeholder="ketik pesan anda di sini"></textarea>
-    <button id="generateLinkButton" onclick="generateLink()">Generate Link</button>
+    <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
+    <div class="button-group">
+        <button class="format-button" onclick="insertEmoji()">😊</button>
+        <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
+        <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
+        <button class="format-button" onclick="formatText('underline')"><u>U</u></button>
+        <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
+    </div>
 
     <div id="result"></div>
 
@@ -86,6 +95,17 @@
                 phoneNumber = '62' + phoneNumber.slice(1); // Mengubah prefix nol menjadi +62
             }
             return phoneNumber;
+        }
+
+        function insertEmoji() {
+            document.getElementById('message').value += '😊';
+            generateLink();
+        }
+
+        function formatText(command) {
+            document.getElementById('message').focus();
+            document.execCommand(command, false, null);
+            generateLink();
         }
 
         function generateLink() {
@@ -102,7 +122,7 @@
                     <p>${whatsappLink}</p>
                     <div class="button-group">
                         <button id="copyButton" onclick="copyLink()">Copy Link</button>
-                        <button id="generateMoreButton" onclick="generateMore()">Generate More</button>
+                        <button id="resetButton" onclick="resetForm()">Reset</button>
                     </div>
                 `;
             } else {
@@ -122,7 +142,7 @@
             alert("Link telah disalin ke clipboard!");
         }
 
-        function generateMore() {
+        function resetForm() {
             document.getElementById("phoneNumber").value = "";
             document.getElementById("message").value = "";
             document.getElementById("result").innerHTML = "";
