@@ -24,12 +24,15 @@
             margin: 5px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
-            font-size: 1.2rem;
+            font-size: 1rem; /* Ukuran font diperkecil */
             width: 100%;
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             font-family: 'Montserrat', sans-serif;
             box-sizing: border-box;
+        }
+        input::placeholder {
+            font-size: 0.9rem; /* Ukuran font placeholder diperkecil */
         }
         button {
             border: none;
@@ -45,11 +48,14 @@
             background-color: #28a745;
             color: white;
             font-weight: bold;
+            width: 49%; /* Menjaga dua tombol dalam satu baris */
+            margin-right: 1%;
         }
         #generateMoreButton {
             background-color: #6c757d;
             color: white;
             font-weight: bold;
+            width: 49%; /* Menjaga dua tombol dalam satu baris */
         }
         #result {
             margin: 20px 0;
@@ -83,8 +89,10 @@
     <button id="generateLinkButton" onclick="generateLink()">Generate Link</button>
 
     <p id="result"></p>
-    <button id="copyButton" style="display:none;" onclick="copyLink()">Copy Link</button>
-    <button id="generateMoreButton" style="display:none;" onclick="generateMore()">Generate More</button>
+    <div style="display: flex; justify-content: space-between;">
+        <button id="copyButton" style="display:none;" onclick="copyLink()">Copy Link</button>
+        <button id="generateMoreButton" style="display:none;" onclick="generateMore()">Generate More</button>
+    </div>
 
     <script>
         function extractFileId(url) {
