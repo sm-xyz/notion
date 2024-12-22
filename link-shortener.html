@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Shortener</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap'); /* Menggunakan font Montserrat dengan tampilan reguler */
-        
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
@@ -16,164 +16,73 @@
             padding: 20px;
             max-width: 480px;
             margin: auto;
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            box-sizing: border-box;
         }
-        input, button, textarea {
-            padding: 10px; /* Ukuran padding lebih kecil */
-            margin: 5px 0; /* Sesuaikan margin untuk kesejajaran */
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
-            font-size: 1.1rem; /* Ukuran font sedikit diperkecil */
-            width: 100%; /* Full width for mobile feel */
+            font-size: 1.1rem;
+            width: 100%;
             background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
-            font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk isian form */
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
         }
-        input::placeholder, textarea::placeholder {
-            font-size: 1rem; /* Ukuran font placeholder sedikit diperkecil */
-            font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk placeholder form */
+        input::placeholder {
+            font-size: 1rem;
         }
         button {
             border: none;
             cursor: pointer;
-            font-size: 1.1rem; /* Memperbesar ukuran font button */
+            font-size: 1.1rem;
         }
-        #copyButton {
-            background-color: #28a745;
+        #shortenButton {
+            background-color: #007bff;
             color: white;
-            font-weight: bold; /* Membuat teks button menjadi bold */
-        }
-        #resetButton {
-            background-color: #dc3545;
-            color: white;
-            font-weight: bold; /* Membuat teks button menjadi bold */
+            font-weight: bold;
         }
         #result {
             margin: 20px 0;
-            word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
+            word-wrap: break-word;
             color: #007bff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Menggunakan font yang sama dengan form input */
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 5px; /* Jarak antar tombol */
-            flex-wrap: nowrap; /* Membuat tombol dalam satu baris */
-            margin-top: 10px;
-        }
-        .format-button, .emoji-picker button {
-            flex: 1; /* Membagi kolom secara proporsional */
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            background-color: #f8f9fa;
-        }
-        .emoji-picker {
-            display: none;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            background-color: transparent;
-        }
-        .emoji-picker button {
-            margin: 0;
-            padding: 5px;
-            font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
-            border: none;
-            background: none;
-        }
-        .emoji-button::after {
-            content: '▼';
-            margin-left: 5px;
-            font-size: 0.75rem;
-        }
-        .emoji-container {
-            display: flex;
-            flex-wrap: wrap;
-            border: 1px solid #ddd;
-            padding: 5px;
-            background-color: transparent;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         @media (prefers-color-scheme: dark) {
             body {
                 color: #fff;
                 background-color: #333;
             }
-            input, button, textarea {
+            input, button {
                 border: 1px solid #555;
-                background-color: #444; /* Menyesuaikan background warna form input di mode gelap */
+                background-color: #444;
             }
         }
     </style>
 </head>
 <body>
     <h1>Link Shortener</h1>
-    
-    <!-- Form untuk memasukkan link panjang -->
-    <input type="text" id="longUrl" placeholder="Paste link panjang di sini">
-    
-    <!-- Tombol untuk memendekkan link -->
-    <button id="shortenButton">Shorten Link</button>
+    <p>Masukkan URL yang ingin kamu pendekkan:</p>
+    <input type="text" id="longUrl" placeholder="Masukkan URL panjang">
+    <button id="shortenButton" onclick="shortenLink()">Shorten Link</button>
 
-    <!-- Preview hasil link pendek -->
-    <div id="result" style="display:none;">
-        <p><strong>Shortened Link:</strong></p>
-        <p id="shortenedLink"></p>
-        <button id="copyButton">Copy Link</button>
-    </div>
-
-    <!-- Tombol reset untuk membuat shortlink baru -->
-    <div class="button-group">
-        <button id="resetButton">Reset</button>
-    </div>
+    <p id="result"></p>
 
     <script>
-        // Menyembunyikan tombol paste link setelah clipboard dipaste
-        const shortenButton = document.getElementById('shortenButton');
-        const longUrlInput = document.getElementById('longUrl');
-        const resultDiv = document.getElementById('result');
-        const shortenedLinkElement = document.getElementById('shortenedLink');
-        const copyButton = document.getElementById('copyButton');
-        const resetButton = document.getElementById('resetButton');
-
-        shortenButton.addEventListener('click', () => {
-            const longUrl = longUrlInput.value;
-            if (!longUrl) {
-                alert("Please enter a valid long URL.");
-                return;
-            }
-            fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`)
-                .then(response => response.json())
-                .then(data => {
-                    const shortLink = data.shorturl;
-                    shortenedLinkElement.innerHTML = `<a href="${shortLink}" target="_blank">${shortLink}</a>`;
-                    resultDiv.style.display = 'block'; // Menampilkan hasil
-                })
-                .catch(error => {
-                    alert('Error shortening the link!');
-                });
-        });
-
-        // Menyalin link pendek ke clipboard
-        copyButton.addEventListener('click', () => {
-            const shortLink = shortenedLinkElement.querySelector('a').href;
-            navigator.clipboard.writeText(shortLink).then(() => {
-                alert('Link copied to clipboard!');
+        async function shortenLink() {
+            const longUrl = document.getElementById('longUrl').value;
+            const response = await fetch(`https://api.tinyurl.com/create?url=${encodeURIComponent(longUrl)}`, {
+                method: 'GET'
             });
-        });
 
-        // Tombol Reset untuk menghapus hasil dan form input
-        resetButton.addEventListener('click', () => {
-            longUrlInput.value = '';
-            shortenedLinkElement.innerHTML = '';
-            resultDiv.style.display = 'none';
-        });
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('result').innerHTML = `<a href="${data.url}" target="_blank">${data.url}</a>`;
+            } else {
+                document.getElementById('result').innerHTML = 'Error: ' + data.error;
+            }
+        }
     </script>
 </body>
 </html>
