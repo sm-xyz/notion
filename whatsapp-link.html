@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Link Generator</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap'); /* Menggunakan font Roboto dengan tampilan reguler */
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
@@ -20,11 +22,14 @@
             margin: 5px;
             border-radius: 5px;
             border: 1px solid #ddd;
-            font-weight: bold;
+            font-weight: normal; /* Menggunakan font reguler/normal */
             width: 100%; /* Full width for mobile feel */
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Menggunakan font yang sama dengan preview output */
+            font-family: 'Roboto', sans-serif; /* Menggunakan font Roboto untuk isian form */
+        }
+        input::placeholder, textarea::placeholder {
+            font-family: 'Roboto', sans-serif; /* Menggunakan font Roboto untuk placeholder form */
         }
         button {
             border: none;
