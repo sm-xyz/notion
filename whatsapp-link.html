@@ -8,80 +8,93 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            background-color: #ffffff;
+            background-color: #f4f7fc;
             text-align: center;
             margin: 0;
             padding: 20px;
             max-width: 480px;
-            margin: auto; /* Ensure the layout is centered and looks mobile on desktop */
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 15px;
         }
         input, button, textarea {
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
             border: 1px solid #ddd;
-            font-weight: bold;
-            width: 100%; /* Full width for mobile feel */
+            font-size: 16px;
+            width: 100%;
             background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+        input:focus, textarea:focus, button:focus {
+            outline: none;
+            border-color: #007bff;
         }
         button {
-            border: none;
             cursor: pointer;
-        }
-        #copyButton {
+            border: none;
             background-color: #007bff;
             color: white;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #copyButton {
+            background-color: #28a745;
+        }
+        #copyButton:hover {
+            background-color: #218838;
         }
         #resetButton {
             background-color: #6c757d;
-            color: white;
+        }
+        #resetButton:hover {
+            background-color: #5a6268;
         }
         #result {
             margin: 20px 0;
-            word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
+            word-wrap: break-word;
             color: #007bff;
         }
         .button-group {
             display: flex;
             justify-content: space-between;
-            gap: 5px; /* Jarak antar tombol */
-            flex-wrap: nowrap; /* Membuat tombol dalam satu baris */
-            margin-top: 10px;
-        }
-        .format-button, .emoji-picker button {
-            flex: 1; /* Membagi kolom secara proporsional */
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            background-color: transparent;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         .emoji-picker {
             display: none;
-            margin-top: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            background-color: transparent;
+            gap: 10px;
+            margin-top: 15px;
         }
         .emoji-picker button {
-            margin: 0;
             padding: 5px;
-            font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
+            font-size: 1.5rem;
+            background-color: transparent;
             border: none;
-            background: none;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .emoji-picker button:hover {
+            transform: scale(1.2);
         }
         .emoji-button::after {
             content: '▼';
             margin-left: 5px;
             font-size: 0.75rem;
-        }
-        .emoji-container {
-            display: flex;
-            flex-wrap: wrap;
-            border: 1px solid #ddd;
-            padding: 5px;
-            background-color: transparent;
         }
         a {
             color: #007bff;
@@ -89,12 +102,16 @@
         }
         @media (prefers-color-scheme: dark) {
             body {
-                color: #fff;
                 background-color: #333;
+                color: #fff;
             }
             input, button, textarea {
+                background-color: #444;
                 border: 1px solid #555;
-                background-color: #444; /* Menyesuaikan background warna form input di mode gelap */
+                color: #fff;
+            }
+            button:hover {
+                background-color: #0056b3;
             }
         }
     </style>
@@ -103,8 +120,9 @@
 
     <h1>WhatsApp Link Generator</h1>
     <p>Masukkan nomor telepon dan pesan untuk membuat link WhatsApp:</p>
-    <input type="text" id="phoneNumber" placeholder="ketik atau paste nomor wa di sini" oninput="generateLink()">
-    <textarea id="message" rows="4" placeholder="ketik pesan anda di sini" oninput="generateLink()"></textarea>
+    <input type="text" id="phoneNumber" placeholder="Nomor WhatsApp" oninput="generateLink()">
+    <textarea id="message" rows="4" placeholder="Pesan Anda" oninput="generateLink()"></textarea>
+
     <div class="button-group">
         <button class="format-button emoji-button" onclick="toggleEmojiPicker()">Emoji</button>
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
@@ -112,61 +130,23 @@
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
         <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
-    <div class="button-group emoji-picker" id="emojiPicker">
-    <div class="emoji-container">
-        <!-- Pilihan emoji yang tampil di dalam satu kotak -->
+
+    <div class="emoji-picker" id="emojiPicker">
         <button onclick="insertEmoji('😀')">😀</button>
         <button onclick="insertEmoji('😁')">😁</button>
         <button onclick="insertEmoji('😂')">😂</button>
         <button onclick="insertEmoji('😃')">😃</button>
         <button onclick="insertEmoji('😄')">😄</button>
-        <button onclick="insertEmoji('😅')">😅</button>
-        <button onclick="insertEmoji('😆')">😆</button>
-        <button onclick="insertEmoji('😉')">😉</button>
-        <button onclick="insertEmoji('😊')">😊</button>
-        <button onclick="insertEmoji('😋')">😋</button>
-        <button onclick="insertEmoji('🙂')">🙂</button>
-        <button onclick="insertEmoji('😇')">😇</button>
-        <button onclick="insertEmoji('😊')">😊</button>
-        <button onclick="insertEmoji('☺️')">☺️</button>
-        <button onclick="insertEmoji('🤗')">🤗</button>
-        <button onclick="insertEmoji('🥰')">🥰</button>
-        <button onclick="insertEmoji('😍')">😍</button>
-        <button onclick="insertEmoji('🤩')">🤩</button>
-        <button onclick="insertEmoji('😎')">😎</button>
-        <button onclick="insertEmoji('🥳')">🥳</button>
-        <button onclick="insertEmoji('🤑')">🤑</button>
-        <button onclick="insertEmoji('🫣')">🫣</button>
-        <button onclick="insertEmoji('🤫')">🤫</button>
-        <button onclick="insertEmoji('🤭')">🤭</button>
-        <button onclick="insertEmoji('🫢')">🫢</button>
-        <button onclick="insertEmoji('🫡')">🫡</button>
-        <button onclick="insertEmoji('🫠')">🫠</button>
-        <button onclick="insertEmoji('😮')">😮</button>
-        <button onclick="insertEmoji('😲')">😲</button>
-        <button onclick="insertEmoji('😱')">😱</button>
-        <button onclick="insertEmoji('👍')">👍</button>
-        <button onclick="insertEmoji('👋')">👋</button>
-        <button onclick="insertEmoji('🙏')">🙏</button>
-        <button onclick="insertEmoji('👈')">👈</button>
-        <button onclick="insertEmoji('👉')">👉</button>
-        <button onclick="insertEmoji('👆')">👆</button>
-        <button onclick="insertEmoji('👇')">👇</button>
-        <button onclick="insertEmoji('✍️')">✍️</button>
-        <button onclick="insertEmoji('🫶')">🫶</button>
-        <button onclick="insertEmoji('❤️')">❤️</button>
+        <!-- Add more emojis here -->
     </div>
-</div>
 
     <div id="result"></div>
 
     <script>
         function formatPhoneNumber(phoneNumber) {
-            phoneNumber = phoneNumber.replace(/[-\s+]/g, ''); // Menghapus spasi, tanda strip (-), dan tanda plus (+)
+            phoneNumber = phoneNumber.replace(/[-\s+]/g, '');
             if (phoneNumber.startsWith('0')) {
-                phoneNumber = '62' + phoneNumber.slice(1); // Mengubah prefix nol menjadi +62
-            } else if (!phoneNumber.startsWith('62')) {
-                phoneNumber = phoneNumber; // Tidak mengubah prefix negara lain
+                phoneNumber = '62' + phoneNumber.slice(1);
             }
             return phoneNumber;
         }
@@ -174,13 +154,13 @@
         function insertEmoji(emoji) {
             const textarea = document.getElementById('message');
             textarea.value += emoji;
-            toggleEmojiPicker(); // Hide picker setelah memilih emoji
+            toggleEmojiPicker();
             generateLink();
         }
 
         function toggleEmojiPicker() {
             const picker = document.getElementById('emojiPicker');
-            picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+            picker.style.display = picker.style.display === 'none' ? 'flex' : 'none';
         }
 
         function formatText(command) {
@@ -203,10 +183,9 @@
         function undoLastAction() {
             const textarea = document.getElementById('message');
             let value = textarea.value;
-
             const formatPatterns = [
                 { pattern: /\*\*([^*]+)\*\*/, replacement: '$1' },
-                { pattern: /__([^_]+)__/, replacement: '$1' },
+                { pattern: /__([^_]+)__/ , replacement: '$1' },
                 { pattern: /~~([^~]+)~~/, replacement: '$1' }
             ];
 
@@ -227,11 +206,11 @@
             var resultDiv = document.getElementById("result");
 
             phoneNumber = formatPhoneNumber(phoneNumber);
-
             var encodedMessage = encodeURIComponent(message);
             var whatsappLink = "https://wa.me/" + phoneNumber + "?text=" + encodedMessage;
+
             resultDiv.innerHTML = `
-                <p>${whatsappLink}</p>
+                <p><a href="${whatsappLink}" target="_blank">${whatsappLink}</a></p>
                 <div class="button-group">
                     <button id="copyButton" onclick="copyLink()">Copy Link</button>
                     <button id="resetButton" onclick="resetForm()">Reset</button>
@@ -241,7 +220,7 @@
 
         function copyLink() {
             var resultDiv = document.getElementById("result");
-            var link = resultDiv.querySelector("p").innerText;
+            var link = resultDiv.querySelector("a").href;
             var tempInput = document.createElement("input");
             tempInput.value = link;
             document.body.appendChild(tempInput);
@@ -257,6 +236,5 @@
             document.getElementById("result").innerHTML = "";
         }
     </script>
-
 </body>
 </html>
