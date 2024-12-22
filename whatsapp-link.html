@@ -8,26 +8,28 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap'); /* Menggunakan font Montserrat dengan tampilan reguler */
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            background-color: #ffffff;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-            max-width: 480px;
-            margin: auto; /* Ensure the layout is centered and looks mobile on desktop */
-        }
-        input, button, textarea {
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-weight: normal; /* Menggunakan font reguler/normal */
-            width: 100%; /* Full width for mobile feel */
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
-            font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk isian form */
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #ffffff;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    max-width: 480px;
+    margin: auto;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+input, button, textarea {
+    padding: 10px;
+    margin: 5px 0; /* Sesuaikan margin untuk kesejajaran */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-weight: normal; /* Menggunakan font reguler/normal */
+    width: 100%; /* Full width for mobile feel */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
+    font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk isian form */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
         input::placeholder, textarea::placeholder {
             font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk placeholder form */
         }
