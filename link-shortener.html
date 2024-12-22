@@ -68,18 +68,29 @@
     <button id="shortenButton" onclick="shortenLink()">Shorten Link</button>
 
     <p id="result"></p>
+    <button id="copyButton" style="display:none;" onclick="copyLink()">Copy</button>
 
     <script>
         async function shortenLink() {
             const longUrl = document.getElementById('longUrl').value;
-            const response = await fetch(`https://cutt.ly/api/api.php?key=test&short=${encodeURIComponent(longUrl)}`);
+            const response = await fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`);
 
             const data = await response.json();
-            if (data.url.status === 7) {
-                document.getElementById('result').innerHTML = `<a href="${data.url.shortLink}" target="_blank">${data.url.shortLink}</a>`;
+            if (response.ok) {
+                document.getElementById('result').innerHTML = `<a href="${data.shorturl}" target="_blank">${data.shorturl}</a>`;
+                document.getElementById('copyButton').style.display = 'inline';
             } else {
-                document.getElementById('result').innerHTML = 'Error: ' + data.url.title;
+                document.getElementById('result').innerHTML = 'Error: ' + data.errormessage;
             }
+        }
+
+        function copyLink() {
+            const copyText = document.getElementById('result').innerText;
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert('Link berhasil disalin!');
+            }, (err) => {
+                console.error('Failed to copy text: ', err);
+            });
         }
     </script>
 </body>
