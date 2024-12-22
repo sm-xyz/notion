@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Link Generator</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap'); /* Menggunakan font Jost yang mirip Poppins namun ringan */
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
@@ -24,7 +26,10 @@
             width: 100%; /* Full width for mobile feel */
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
-            font-family: Arial, sans-serif; /* Mengubah font menjadi Arial untuk isian form */
+            font-family: 'Jost', sans-serif; /* Menggunakan font Jost untuk isian form */
+        }
+        input::placeholder, textarea::placeholder {
+            font-family: 'Jost', sans-serif; /* Menggunakan font Jost untuk placeholder form */
         }
         button {
             border: none;
@@ -111,7 +116,7 @@
         <button class="format-button" onclick="formatText('bold')"><b>B</b></button>
         <button class="format-button" onclick="formatText('italic')"><i>I</i></button>
         <button class="format-button" onclick="formatText('strikeThrough')"><s>S</s></button>
-        <button class="format-button" onclick="undoLastAction()">Undo</button>
+        <button class="format-button" id="undoButton">Undo</button>
     </div>
     <div class="button-group emoji-picker" id="emojiPicker">
         <div class="emoji-container">
@@ -160,6 +165,8 @@
     <div id="result"></div>
 
     <script>
+        let history = [];
+
         function formatPhoneNumber(phoneNumber) {
             phoneNumber = phoneNumber.replace(/[-\s+]/g, ''); // Menghapus spasi, tanda strip (-), dan tanda plus (+)
             if (phoneNumber.startsWith('0')) {
@@ -172,7 +179,13 @@
 
         function insertEmoji(emoji) {
             const textarea = document.getElementById('message');
-            textarea.value += emoji;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const textBefore = textarea.value.substring(0, start);
+            const textAfter = textarea.value.substring(end, textarea.value.length);
+            const newText = textBefore + emoji + textAfter;
+            history.push(textarea.value);
+            textarea.value = newText;
             toggleEmojiPicker(); // Hide picker setelah memilih emoji
             generateLink();
         }
@@ -188,6 +201,8 @@
             const end = textarea.selectionEnd;
             const selectedText = textarea.value.substring(start, end);
 
+            history.push(textarea.value); // Simpan state sebelum diubah
+
             if (command === 'bold') {
                 textarea.setRangeText(`*${selectedText}*`, start, end, 'end');
             } else if (command === 'italic') {
@@ -201,17 +216,13 @@
 
         function undoLastAction() {
             const textarea = document.getElementById('message');
-            const history = textarea.getAttribute("data-history") || "";
-            const lastAction = history.split('|').pop();
-
-            if (lastAction) {
-                textarea.value = textarea.value.replace(lastAction, "");
-                const updatedHistory = history.split('|').slice(0, -1).join('|');
-                textarea.setAttribute("data-history", updatedHistory);
+            if (history.length > 0) {
+                textarea.value = history.pop();
+                generateLink();
             }
-
-            generateLink();
         }
+
+        document.getElementById('undoButton').addEventListener('click', undoLastAction);
 
         function generateLink() {
             var phoneNumber = document.getElementById("phoneNumber").value;
@@ -229,9 +240,6 @@
                     <button id="resetButton" onclick="resetForm()">Reset</button>
                 </div>
             `;
-
-            const textarea = document.getElementById('message');
-            textarea.setAttribute("data-history", (textarea.getAttribute("data-history") || "") + message + '|');
         }
 
         function copyLink() {
@@ -250,6 +258,7 @@
             document.getElementById("phoneNumber").value = "";
             document.getElementById("message").value = "";
             document.getElementById("result").innerHTML = "";
+            history = []; // Reset history saat form direset
         }
     </script>
 
