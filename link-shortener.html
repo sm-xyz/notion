@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Shortener</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap'); /* Menggunakan font Montserrat dengan tampilan reguler */
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            max-width: 480px;
+            margin: auto;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+        input, button, textarea {
+            padding: 10px; /* Ukuran padding lebih kecil */
+            margin: 5px 0; /* Sesuaikan margin untuk kesejajaran */
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem; /* Ukuran font sedikit diperkecil */
+            width: 100%; /* Full width for mobile feel */
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
+            font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk isian form */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+        input::placeholder, textarea::placeholder {
+            font-size: 1rem; /* Ukuran font placeholder sedikit diperkecil */
+            font-family: 'Montserrat', sans-serif; /* Menggunakan font Montserrat untuk placeholder form */
+        }
+        button {
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem; /* Memperbesar ukuran font button */
+        }
+        #copyButton {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold; /* Membuat teks button menjadi bold */
+        }
+        #resetButton {
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold; /* Membuat teks button menjadi bold */
+        }
+        #result {
+            margin: 20px 0;
+            word-wrap: break-word; /* Ensure long links wrap to fit mobile screen */
+            color: #007bff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Menggunakan font yang sama dengan form input */
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px; /* Jarak antar tombol */
+            flex-wrap: nowrap; /* Membuat tombol dalam satu baris */
+            margin-top: 10px;
+        }
+        .format-button, .emoji-picker button {
+            flex: 1; /* Membagi kolom secara proporsional */
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            background-color: #f8f9fa;
+        }
+        .emoji-picker {
+            display: none;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: transparent;
+        }
+        .emoji-picker button {
+            margin: 0;
+            padding: 5px;
+            font-size: 1rem; /* Ukuran tombol emoji lebih kecil */
+            border: none;
+            background: none;
+        }
+        .emoji-button::after {
+            content: '▼';
+            margin-left: 5px;
+            font-size: 0.75rem;
+        }
+        .emoji-container {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background-color: transparent;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #fff;
+                background-color: #333;
+            }
+            input, button, textarea {
+                border: 1px solid #555;
+                background-color: #444; /* Menyesuaikan background warna form input di mode gelap */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Shortener</h1>
+    
+    <!-- Form untuk memasukkan link panjang -->
+    <input type="text" id="longUrl" placeholder="Paste link panjang di sini">
+    <button id="pasteButton">Paste Link</button>
+
+    <!-- Tombol untuk memendekkan link -->
+    <button id="shortenButton" style="display:none;">Shorten Link</button>
+
+    <!-- Preview hasil link pendek -->
+    <div id="result" style="display:none;">
+        <p><strong>Shortened Link:</strong></p>
+        <p id="shortenedLink"></p>
+        <button id="copyButton">Copy Link</button>
+    </div>
+
+    <!-- Form custom link -->
+    <input type="text" id="customLink" placeholder="Enter custom alias">
+    <button id="generateCustomLink">Generate Custom Link</button>
+    <div id="customLinkResult"></div>
+    
+    <!-- Tombol reset untuk membuat shortlink baru -->
+    <div class="button-group">
+        <button id="resetButton">Reset</button>
+    </div>
+    
+    <script>
+        // Menyembunyikan tombol paste link setelah clipboard dipaste
+        const pasteButton = document.getElementById('pasteButton');
+        const longUrlInput = document.getElementById('longUrl');
+        const shortenButton = document.getElementById('shortenButton');
+        const resultDiv = document.getElementById('result');
+        const shortenedLinkElement = document.getElementById('shortenedLink');
+        const copyButton = document.getElementById('copyButton');
+        const customLinkInput = document.getElementById('customLink');
+        const generateCustomLinkButton = document.getElementById('generateCustomLink');
+        const customLinkResult = document.getElementById('customLinkResult');
+        const resetButton = document.getElementById('resetButton');
+
+        pasteButton.addEventListener('click', () => {
+            navigator.clipboard.readText().then(text => {
+                longUrlInput.value = text;
+                pasteButton.style.display = 'none'; // Sembunyikan tombol setelah menempel
+                shortenButton.style.display = 'block'; // Tampilkan tombol Shorten
+            });
+        });
+
+        // Memendekkan link panjang
+        shortenButton.addEventListener('click', () => {
+            const longUrl = longUrlInput.value;
+            fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const shortLink = data.shorturl;
+                    shortenedLinkElement.textContent = shortLink;
+                    resultDiv.style.display = 'block'; // Menampilkan hasil
+                })
+                .catch(error => {
+                    alert('Error shortening the link!');
+                });
+        });
+
+        // Menyalin link pendek ke clipboard
+        copyButton.addEventListener('click', () => {
+            const shortLink = shortenedLinkElement.textContent;
+            navigator.clipboard.writeText(shortLink).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        });
+
+        // Membuat custom link
+        generateCustomLinkButton.addEventListener('click', () => {
+            const longUrl = longUrlInput.value;
+            const customAlias = customLinkInput.value;
+            if (!customAlias) {
+                alert('Please enter a custom alias!');
+                return;
+            }
+
+            fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&shorturl=${customAlias}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.shorturl) {
+                        customLinkResult.innerHTML = `
+                            <p><strong>Custom Link:</strong> <a href="${data.shorturl}" target="_blank">${data.shorturl}</a></p>
+                            <button onclick="copyCustomLink()">Copy Custom Link</button>
+                        `;
+                    } else {
+                        customLinkResult.innerHTML = '<p style="color: red;">Custom alias already taken. Please try another.</p>';
+                    }
+                })
+                .catch(error => {
+                    customLinkResult.innerHTML = '<p style="color: red;">Error generating custom link.</p>';
+                });
+        });
+
+        function copyCustomLink() {
+            const customLink = customLinkResult.querySelector('a').href;
+            navigator.clipboard.writeText(customLink).then(() => {
+                alert('Custom link copied to clipboard!');
+            });
+        }
+
+        // Tombol Reset untuk menghapus hasil dan form input
+        resetButton.addEventListener('click', () => {
+            longUrlInput.value = '';
+            customLinkInput.value = '';
+            shortenedLinkElement.textContent = '';
+            customLinkResult.innerHTML = '';
+            resultDiv.style.display = 'none';
+            pasteButton.style.display = 'block';
+            shortenButton.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
