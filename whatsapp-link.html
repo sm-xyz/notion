@@ -24,6 +24,7 @@
             width: 100%; /* Full width for mobile feel */
             background-color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow pada bingkai/outline form */
+            font-family: Arial, sans-serif; /* Mengubah font menjadi Arial untuk isian form */
         }
         button {
             border: none;
@@ -113,10 +114,10 @@
         <button class="format-button" onclick="undoLastAction()">Undo</button>
     </div>
     <div class="button-group emoji-picker" id="emojiPicker">
-    <div class="emoji-container">
-        <!-- Pilihan emoji yang tampil di dalam satu kotak -->
-        <button onclick="insertEmoji('😀')">😀</button>
-        <button onclick="insertEmoji('😁')">😁</button>
+        <div class="emoji-container">
+            <!-- Pilihan emoji yang tampil di dalam satu kotak -->
+            <button onclick="insertEmoji('😀')">😀</button>
+             <button onclick="insertEmoji('😁')">😁</button>
         <button onclick="insertEmoji('😂')">😂</button>
         <button onclick="insertEmoji('😃')">😃</button>
         <button onclick="insertEmoji('😄')">😄</button>
@@ -127,7 +128,6 @@
         <button onclick="insertEmoji('😋')">😋</button>
         <button onclick="insertEmoji('🙂')">🙂</button>
         <button onclick="insertEmoji('😇')">😇</button>
-        <button onclick="insertEmoji('😊')">😊</button>
         <button onclick="insertEmoji('☺️')">☺️</button>
         <button onclick="insertEmoji('🤗')">🤗</button>
         <button onclick="insertEmoji('🥰')">🥰</button>
@@ -141,7 +141,6 @@
         <button onclick="insertEmoji('🤭')">🤭</button>
         <button onclick="insertEmoji('🫢')">🫢</button>
         <button onclick="insertEmoji('🫡')">🫡</button>
-        <button onclick="insertEmoji('🫠')">🫠</button>
         <button onclick="insertEmoji('😮')">😮</button>
         <button onclick="insertEmoji('😲')">😲</button>
         <button onclick="insertEmoji('😱')">😱</button>
@@ -154,9 +153,9 @@
         <button onclick="insertEmoji('👇')">👇</button>
         <button onclick="insertEmoji('✍️')">✍️</button>
         <button onclick="insertEmoji('🫶')">🫶</button>
-        <button onclick="insertEmoji('❤️')">❤️</button>
+            <button onclick="insertEmoji('❤️')">❤️</button>
+        </div>
     </div>
-</div>
 
     <div id="result"></div>
 
@@ -202,20 +201,13 @@
 
         function undoLastAction() {
             const textarea = document.getElementById('message');
-            let value = textarea.value;
+            const history = textarea.getAttribute("data-history") || "";
+            const lastAction = history.split('|').pop();
 
-            const formatPatterns = [
-                { pattern: /\*\*([^*]+)\*\*/, replacement: '$1' },
-                { pattern: /__([^_]+)__/, replacement: '$1' },
-                { pattern: /~~([^~]+)~~/, replacement: '$1' }
-            ];
-
-            for (let format of formatPatterns) {
-                if (format.pattern.test(value)) {
-                    value = value.replace(format.pattern, format.replacement);
-                    textarea.value = value;
-                    break;
-                }
+            if (lastAction) {
+                textarea.value = textarea.value.replace(lastAction, "");
+                const updatedHistory = history.split('|').slice(0, -1).join('|');
+                textarea.setAttribute("data-history", updatedHistory);
             }
 
             generateLink();
@@ -237,6 +229,9 @@
                     <button id="resetButton" onclick="resetForm()">Reset</button>
                 </div>
             `;
+
+            const textarea = document.getElementById('message');
+            textarea.setAttribute("data-history", (textarea.getAttribute("data-history") || "") + message + '|');
         }
 
         function copyLink() {
