@@ -117,10 +117,9 @@
     
     <!-- Form untuk memasukkan link panjang -->
     <input type="text" id="longUrl" placeholder="Paste link panjang di sini">
-    <button id="pasteButton">Paste Link</button>
-
+    
     <!-- Tombol untuk memendekkan link -->
-    <button id="shortenButton" style="display:none;">Shorten Link</button>
+    <button id="shortenButton">Shorten Link</button>
 
     <!-- Preview hasil link pendek -->
     <div id="result" style="display:none;">
@@ -129,45 +128,31 @@
         <button id="copyButton">Copy Link</button>
     </div>
 
-    <!-- Form custom link -->
-    <input type="text" id="customLink" placeholder="Enter custom alias">
-    <button id="generateCustomLink">Generate Custom Link</button>
-    <div id="customLinkResult"></div>
-    
     <!-- Tombol reset untuk membuat shortlink baru -->
     <div class="button-group">
         <button id="resetButton">Reset</button>
     </div>
-    
+
     <script>
         // Menyembunyikan tombol paste link setelah clipboard dipaste
-        const pasteButton = document.getElementById('pasteButton');
-        const longUrlInput = document.getElementById('longUrl');
         const shortenButton = document.getElementById('shortenButton');
+        const longUrlInput = document.getElementById('longUrl');
         const resultDiv = document.getElementById('result');
         const shortenedLinkElement = document.getElementById('shortenedLink');
         const copyButton = document.getElementById('copyButton');
-        const customLinkInput = document.getElementById('customLink');
-        const generateCustomLinkButton = document.getElementById('generateCustomLink');
-        const customLinkResult = document.getElementById('customLinkResult');
         const resetButton = document.getElementById('resetButton');
 
-        pasteButton.addEventListener('click', () => {
-            navigator.clipboard.readText().then(text => {
-                longUrlInput.value = text;
-                pasteButton.style.display = 'none'; // Sembunyikan tombol setelah menempel
-                shortenButton.style.display = 'block'; // Tampilkan tombol Shorten
-            });
-        });
-
-        // Memendekkan link panjang
         shortenButton.addEventListener('click', () => {
             const longUrl = longUrlInput.value;
+            if (!longUrl) {
+                alert("Please enter a valid long URL.");
+                return;
+            }
             fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`)
                 .then(response => response.json())
                 .then(data => {
                     const shortLink = data.shorturl;
-                    shortenedLinkElement.textContent = shortLink;
+                    shortenedLinkElement.innerHTML = `<a href="${shortLink}" target="_blank">${shortLink}</a>`;
                     resultDiv.style.display = 'block'; // Menampilkan hasil
                 })
                 .catch(error => {
@@ -177,54 +162,17 @@
 
         // Menyalin link pendek ke clipboard
         copyButton.addEventListener('click', () => {
-            const shortLink = shortenedLinkElement.textContent;
+            const shortLink = shortenedLinkElement.querySelector('a').href;
             navigator.clipboard.writeText(shortLink).then(() => {
                 alert('Link copied to clipboard!');
             });
         });
 
-        // Membuat custom link
-        generateCustomLinkButton.addEventListener('click', () => {
-            const longUrl = longUrlInput.value;
-            const customAlias = customLinkInput.value;
-            if (!customAlias) {
-                alert('Please enter a custom alias!');
-                return;
-            }
-
-            fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&shorturl=${customAlias}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.shorturl) {
-                        customLinkResult.innerHTML = `
-                            <p><strong>Custom Link:</strong> <a href="${data.shorturl}" target="_blank">${data.shorturl}</a></p>
-                            <button onclick="copyCustomLink()">Copy Custom Link</button>
-                        `;
-                    } else {
-                        customLinkResult.innerHTML = '<p style="color: red;">Custom alias already taken. Please try another.</p>';
-                    }
-                })
-                .catch(error => {
-                    customLinkResult.innerHTML = '<p style="color: red;">Error generating custom link.</p>';
-                });
-        });
-
-        function copyCustomLink() {
-            const customLink = customLinkResult.querySelector('a').href;
-            navigator.clipboard.writeText(customLink).then(() => {
-                alert('Custom link copied to clipboard!');
-            });
-        }
-
         // Tombol Reset untuk menghapus hasil dan form input
         resetButton.addEventListener('click', () => {
             longUrlInput.value = '';
-            customLinkInput.value = '';
-            shortenedLinkElement.textContent = '';
-            customLinkResult.innerHTML = '';
+            shortenedLinkElement.innerHTML = '';
             resultDiv.style.display = 'none';
-            pasteButton.style.display = 'block';
-            shortenButton.style.display = 'none';
         });
     </script>
 </body>
