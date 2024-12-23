@@ -14,6 +14,7 @@
             margin: 0;
             background-color: #f5f5f5;
             font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #quote {
@@ -22,15 +23,27 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
             max-width: 600px;
+            width: 80%;
             text-align: center;
             font-size: 1.2em;
             color: #333;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .author {
             margin-top: 10px;
             font-size: 1em;
             color: #777;
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: #f5f5f5;
+        }
+
+        .dark-mode #quote {
+            background-color: #555;
+            color: #f5f5f5;
         }
     </style>
 </head>
@@ -42,6 +55,10 @@
             { text: "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar.", author: "Jack Ma" },
             { text: "Satu-satunya cara untuk melakukan pekerjaan yang hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
             { text: "Kegagalan adalah bumbu kehidupan. Kegagalan membuat kita bisa menjadi manusia yang tangguh.", author: "Bill Gates" },
+            { text: "Bisnis bukan berbicara siapa yang menang, melainkan siapa yang bisa bertahan.", author: "Nadiem Makarim" },
+            { text: "Jangan buang waktu sedikit pun untuk putus asa. Fokus ke apa yang bisa kamu kontrol.", author: "Belva Delvara" },
+            { text: "Kami percaya kesuksesan itu hanya bisa diraih dengan cara membantu orang lain menjadi lebih sukses.", author: "William Tanuwijaya" },
+            { text: "Kegagalan adalah apa yang membuat kita memperbaiki diri dan mempertajam naluri kita.", author: "Ahmad Zaky" },
             { text: "Ketika sesuatu cukup penting, Anda melakukan itu meskipun peluangnya tidak menguntungkan.", author: "Elon Musk" },
             { text: "Peluang bisnis sangat mirip dengan bus; selalu ada bus lain yang datang.", author: "Richard Branson" },
             { text: "Risiko datang dari tidak mengetahui apa yang Anda lakukan.", author: "Warren Buffett" },
@@ -52,6 +69,7 @@
             { text: "Jika Anda tidak bisa toleran terhadap kegagalan, Anda tidak akan pernah berhasil.", author: "Jeff Bezos" },
             { text: "Keberhasilan tidak hanya tentang apa yang Anda capai, tetapi juga tentang apa yang Anda bantu orang lain capai.", author: "Sundar Pichai" },
             { text: "Jadilah berani untuk mengikuti impianmu dan jangan takut untuk gagal.", author: "Oprah Winfrey" },
+            { text: "Kepemimpinan bukan tentang posisi, tetapi tentang tindakan.", author: "Howard Schultz" },
             { text: "Inovasi adalah tentang menciptakan sesuatu yang lebih baik dari sebelumnya.", author: "Tim Cook" },
             { text: "Keberanian adalah untuk mengakui ketakutan, tapi tetap melangkah ke depan.", author: "Indra Nooyi" },
             { text: "Investasi terbaik adalah investasi dalam diri sendiri dan pendidikan.", author: "Melinda Gates" },
@@ -59,8 +77,11 @@
             { text: "Berani bermimpi besar, tetapi ingat untuk bertindak dengan langkah kecil setiap hari.", author: "Randi Zuckerberg" },
             { text: "Kesuksesan bukan hanya tentang uang, tetapi juga tentang membuat dampak positif.", author: "Sophia Amoruso" },
             { text: "Inovasi dimulai dari keinginan untuk memperbaiki sesuatu yang sudah ada.", author: "Evan Spiegel" },
+            { text: "Jadilah autentik dan jangan takut untuk menunjukkan siapa dirimu sebenarnya.", author: "Jessica Alba" },
             { text: "Kerja keras dan ketekunan adalah kunci untuk mencapai impianmu.", author: "Gary Vaynerchuk" },
+            { text: "Budaya perusahaan harus menjadi fondasi dari semua keputusan bisnismu.", author: "Tony Hsieh" },
             { text: "Kesuksesan sejati datang dari keseimbangan antara kerja keras dan kesehatan mental.", author: "Arianna Huffington" },
+            { text: "Satu suara bisa mengubah dunia; gunakan suaramu untuk membuat perbedaan.", author: "Malala Yousafzai" }
         ];
 
         function displayRandomQuote() {
@@ -77,7 +98,19 @@
             setInterval(displayRandomQuote, 3600000); // 3600000 ms = 1 hour
         }
 
-        window.onload = updateQuoteEveryHour;
+        function setTheme() {
+            const hour = new Date().getHours();
+            if (hour >= 18 || hour < 6) { // Night time
+                document.body.classList.add('dark-mode');
+            } else { // Day time
+                document.body.classList.remove('dark-mode');
+            }
+        }
+
+        window.onload = function() {
+            updateQuoteEveryHour();
+            setTheme();
+        };
     </script>
 </body>
 </html>
