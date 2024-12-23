@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quotes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #quote {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .author {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div id="quote"></div>
+
+    <script>
+        const quotes = [
+            { text: "Jika kamu tidak menyerah, kamu masih memiliki kesempatan. Menyerah adalah kegagalan terbesar.", author: "Jack Ma" },
+            { text: "Satu-satunya cara untuk melakukan pekerjaan yang hebat adalah mencintai apa yang kamu lakukan.", author: "Steve Jobs" },
+            { text: "Kegagalan adalah bumbu kehidupan. Kegagalan membuat kita bisa menjadi manusia yang tangguh.", author: "Bill Gates" },
+            { text: "Ketika sesuatu cukup penting, Anda melakukan itu meskipun peluangnya tidak menguntungkan.", author: "Elon Musk" },
+            { text: "Peluang bisnis sangat mirip dengan bus; selalu ada bus lain yang datang.", author: "Richard Branson" },
+            { text: "Risiko datang dari tidak mengetahui apa yang Anda lakukan.", author: "Warren Buffett" },
+            { text: "Selalu berpikir besar dan berani mengambil risiko.", author: "Larry Page" },
+            { text: "Buatlah hal-hal yang baik dan orang-orang akan datang.", author: "Mark Zuckerberg" },
+            { text: "Kita harus berani mengambil risiko untuk mendapatkan hasil yang lebih baik.", author: "Reed Hastings" },
+            { text: "Setiap inovasi besar dimulai dengan pertanyaan sederhana: 'Mengapa tidak?'", author: "Peter Thiel" },
+            { text: "Jika Anda tidak bisa toleran terhadap kegagalan, Anda tidak akan pernah berhasil.", author: "Jeff Bezos" },
+            { text: "Keberhasilan tidak hanya tentang apa yang Anda capai, tetapi juga tentang apa yang Anda bantu orang lain capai.", author: "Sundar Pichai" },
+            { text: "Jadilah berani untuk mengikuti impianmu dan jangan takut untuk gagal.", author: "Oprah Winfrey" },
+            { text: "Inovasi adalah tentang menciptakan sesuatu yang lebih baik dari sebelumnya.", author: "Tim Cook" },
+            { text: "Keberanian adalah untuk mengakui ketakutan, tapi tetap melangkah ke depan.", author: "Indra Nooyi" },
+            { text: "Investasi terbaik adalah investasi dalam diri sendiri dan pendidikan.", author: "Melinda Gates" },
+            { text: "Tidak ada alasan untuk menunggu; mulailah sekarang dan perbaiki seiring berjalannya waktu.", author: "Drew Houston" },
+            { text: "Berani bermimpi besar, tetapi ingat untuk bertindak dengan langkah kecil setiap hari.", author: "Randi Zuckerberg" },
+            { text: "Kesuksesan bukan hanya tentang uang, tetapi juga tentang membuat dampak positif.", author: "Sophia Amoruso" },
+            { text: "Inovasi dimulai dari keinginan untuk memperbaiki sesuatu yang sudah ada.", author: "Evan Spiegel" },
+            { text: "Kerja keras dan ketekunan adalah kunci untuk mencapai impianmu.", author: "Gary Vaynerchuk" },
+            { text: "Kesuksesan sejati datang dari keseimbangan antara kerja keras dan kesehatan mental.", author: "Arianna Huffington" },
+        ];
+
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quoteElement = document.getElementById('quote');
+            quoteElement.innerHTML = `
+                <p>${quotes[randomIndex].text}</p>
+                <div class="author">- ${quotes[randomIndex].author}</div>
+            `;
+        }
+
+        function updateQuoteEveryHour() {
+            displayRandomQuote();
+            setInterval(displayRandomQuote, 3600000); // 3600000 ms = 1 hour
+        }
+
+        window.onload = updateQuoteEveryHour;
+    </script>
+</body>
+</html>
