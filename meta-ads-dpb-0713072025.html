@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perbandingan Meta Ads Performance</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .period-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .table-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .trend-up {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .trend-down {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .trend-stable {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        .analysis-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .analysis-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .insight-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .insight-card p {
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .category-1 {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .category-2 {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .category-3 {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .period-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Meta Ads Performance Comparison</h1>
+            <p>Analisis Perbandingan Minggu 30 Juni - 6 Juli vs 7 - 13 Juli 2025</p>
+        </div>
+        
+        <div class="period-tabs">
+            <button class="tab-button active" onclick="showPeriod('comparison')">Perbandingan</button>
+            <button class="tab-button" onclick="showPeriod('week1')">Minggu 1 (30 Jun - 6 Jul)</button>
+            <button class="tab-button" onclick="showPeriod('week2')">Minggu 2 (7 - 13 Jul)</button>
+        </div>
+        
+        <div id="comparison-view">
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title">Perbandingan Biaya per Hasil</h3>
+                    <canvas id="costChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">Perbandingan Konversi/Klik</h3>
+                    <canvas id="conversionChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">Perbandingan Jangkauan</h3>
+                    <canvas id="reachChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">Trend Performa by Category</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <h3 class="table-title">📈 Tabel Perbandingan Detail</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Kampanye</th>
+                                <th>Kategori</th>
+                                <th>Biaya per Hasil</th>
+                                <th>Konversi/Klik</th>
+                                <th>Jangkauan</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analysis-section">
+            <h3 class="analysis-title">🔍 Analisis & Insights</h3>
+            
+            <div class="insight-card">
+                <h3>📈 Performa Terbaik</h3>
+                <p><strong>TR AyoKerjo – All Cabang</strong> tetap menjadi champion dengan biaya per hasil yang sangat rendah (Rp180 → Rp191, naik 6.1%). Meskipun ada kenaikan biaya, performa masih sangat efisien dengan klik yang tinggi (1.056 → 969).</p>
+            </div>
+            
+            <div class="insight-card">
+                <h3>🎯 Perbaikan Signifikan</h3>
+                <p><strong>Panti Jompo Taiwan (Pati)</strong> mengalami improvement dramatis dari kategori 3 ke kategori 1! Biaya per hasil turun drastis dari Rp11.753 ke Rp4.131 (-64.9%) dengan konversi meningkat dari 45 ke 95.</p>
+            </div>
+            
+            <div class="insight-card">
+                <h3>📊 Performa Campuran</h3>
+                <p><strong>Spa Terapis (Brebes, Cirebon, Depok)</strong> berhasil naik dari kategori 2 ke kategori 1 dengan biaya per hasil yang lebih efisien (Rp7.566 → Rp4.874, turun 35.6%). Sementara <strong>Spa Terapis (Bali)</strong> mengalami peningkatan biaya (Rp9.001 → Rp6.648, naik 26.2%).</p>
+            </div>
+            
+            <div class="insight-card">
+                <h3>⚠️ Area yang Perlu Perhatian</h3>
+                <p><strong>Pelatihan Spa Terapis (Pati)</strong> masih berada di kategori 3 dengan biaya per hasil yang tinggi (Rp10.697 → Rp11.081, naik 3.6%). Kampanye ini memerlukan revisi strategi menyeluruh.</p>
+            </div>
+            
+            <div class="insight-card">
+                <h3>🚀 Rekomendasi Strategis</h3>
+                <p>
+                    <strong>Fokus Utama:</strong> Lanjutkan dan tingkatkan budget untuk kampanye kategori 1. 
+                    <strong>Optimasi:</strong> Terapkan strategi sukses Panti Jompo Taiwan (Pati) ke kampanye lain. 
+                    <strong>Evaluasi:</strong> Lakukan audit mendalam pada Pelatihan Spa Terapis (Pati) untuk menentukan kelayakan lanjutan.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for charts
+        const campaignData = {
+            week1: {
+                'TR AyoKerjo – All Cabang': {cost: 180, result: 1056, reach: 33837, category: 1, type: 'klik'},
+                'Panti Jompo Taiwan (All Cabang)': {cost: 1751, result: 67, reach: 5347, category: 1, type: 'konversi'},
+                'Spa Terapis (Brebes, Cirebon, Depok)': {cost: 7566, result: 18, reach: 3964, category: 2, type: 'konversi'},
+                'Spa Terapis (Bali)': {cost: 9001, result: 22, reach: 6200, category: 2, type: 'konversi'},
+                'Pelatihan Spa Terapis (Pati)': {cost: 10697, result: 11, reach: 7840, category: 3, type: 'konversi'},
+                'Panti Jompo Taiwan (Pati)': {cost: 11753, result: 45, reach: 35342, category: 3, type: 'konversi'}
+            },
+            week2: {
+                'TR AyoKerjo – All Cabang': {cost: 191, result: 969, reach: 35529, category: 1, type: 'klik'},
+                'Panti Jompo Taiwan (All Cabang)': {cost: 1421, result: 87, reach: 6375, category: 1, type: 'konversi'},
+                'Panti Jompo Taiwan (Pati)': {cost: 4131, result: 95, reach: 25163, category: 1, type: 'konversi'},
+                'Spa Terapis (Brebes, Cirebon, Depok)': {cost: 4874, result: 25, reach: 3672, category: 1, type: 'konversi'},
+                'Spa Terapis (Bali)': {cost: 6648, result: 37, reach: 7079, category: 2, type: 'konversi'},
+                'Pelatihan Spa Terapis (Pati)': {cost: 11081, result: 11, reach: 7790, category: 3, type: 'konversi'}
+            }
+        };
+
+        // Chart configurations
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        };
+
+        // Initialize charts
+        function initCharts() {
+            // Cost comparison chart
+            const costCtx = document.getElementById('costChart').getContext('2d');
+            const costChart = new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(campaignData.week2),
+                    datasets: [{
+                        label: 'Minggu 1 (30 Jun - 6 Jul)',
+                        data: Object.keys(campaignData.week2).map(key => 
+                            campaignData.week1[key] ? campaignData.week1[key].cost : 0
+                        ),
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Minggu 2 (7 - 13 Jul)',
+                        data: Object.keys(campaignData.week2).map(key => campaignData.week2[key].cost),
+                        backgroundColor: 'rgba(118, 75, 162, 0.6)',
+                        borderColor: 'rgba(118, 75, 162, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Biaya per Hasil (Rp)'
+                        }
+                    }
+                }
+            });
+
+            // Conversion comparison chart
+            const conversionCtx = document.getElementById('conversionChart').getContext('2d');
+            const conversionChart = new Chart(conversionCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(campaignData.week2),
+                    datasets: [{
+                        label: 'Minggu 1',
+                        data: Object.keys(campaignData.week2).map(key => 
+                            campaignData.week1[key] ? campaignData.week1[key].result : 0
+                        ),
+                        backgroundColor: 'rgba(39, 174, 96, 0.6)',
+                        borderColor: 'rgba(39, 174, 96, 1)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Minggu 2',
+                        data: Object.keys(campaignData.week2).map(key => campaignData.week2[key].result),
+                        backgroundColor: 'rgba(231, 76, 60, 0.6)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Konversi/Klik'
+                        }
+                    }
+                }
+            });
+
+            // Reach comparison chart
+            const reachCtx = document.getElementById('reachChart').getContext('2d');
+            const reachChart = new Chart(reachCtx, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(campaignData.week2),
+                    datasets: [{
+                        label: 'Minggu 1',
+                        data: Object.keys(campaignData.week2).map(key => 
+                            campaignData.week1[key] ? campaignData.week1[key].reach : 0
+                        ),
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Minggu 2',
+                        data: Object.keys(campaignData.week2).map(key => campaignData.week2[key].reach),
+                        borderColor: 'rgba(155, 89, 182, 1)',
+                        backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    plugins: {
+                        ...chartOptions.plugins,
+                        title: {
+                            display: true,
+                            text: 'Jangkauan (Reach)'
+                        }
+                    }
+                }
+            });
+
+            // Category distribution chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Kategori 1 (Sangat Efisien)', 'Kategori 2 (Cukup Baik)', 'Kategori 3 (Perlu Perbaikan)'],
+                    datasets: [{
+                        data: [
+                            Object.values(campaignData.week2).filter(c => c.category === 1).length,
+                            Object.values(campaignData.week2).filter(c => c.category === 2).length,
+                            Object.values(campaignData.week2).filter(c => c.category === 3).length
+                        ],
+                        backgroundColor: [
+                            'rgba(39, 174, 96, 0.8)',
+                            'rgba(243, 156, 18, 0.8)',
+                            'rgba(231, 76, 60, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(39, 174, 96, 1)',
+                            'rgba(243, 156, 18, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Generate comparison table
+        function generateComparisonTable() {
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+
+            Object.keys(campaignData.week2).forEach(campaign => {
+                const week2Data = campaignData.week2[campaign];
+                const week1Data = campaignData.week1[campaign];
+                
+                const row = document.createElement('tr');
+                
+                // Calculate trends
+                const costTrend = week1Data ? 
+                    ((week2Data.cost - week1Data.cost) / week1Data.cost * 100).toFixed(1) : 'N/A';
+                const resultTrend = week1Data ? 
+                    ((week2Data.result - week1Data.result) / week1Data.result * 100).toFixed(1) : 'N/A';
+                const reachTrend = week1Data ? 
+                    ((week2Data.reach - week1Data.reach) / week1Data.reach * 100).toFixed(1) : 'N/A';
+                
+                const getCategoryBadge = (category) => {
+                    const badges = {
+                        1: '<span class="category-badge category-1">Sangat Efisien</span>',
+                        2: '<span class="category-badge category-2">Cukup Baik</span>',
+                        3: '<span class="category-badge category-3">Perlu Perbaikan</span>'
+                    };
+                    return badges[category] || '';
+                };
+                
+                const getTrendClass = (trend) => {
+                    if (trend === 'N/A') return 'trend-stable';
+                    const num = parseFloat(trend);
+                    return num > 0 ? 'trend-up' : num < 0 ? 'trend-down' : 'trend-stable';
+                };
+                
+                const getTrendIcon = (trend) => {
+                    if (trend === 'N/A') return '➕';
+                    const num = parseFloat(trend);
+                    return num > 0 ? '📈' : num < 0 ? '📉' : '➡️';
+                };
+                
+                row.innerHTML = `
+                    <td><strong>${campaign}</strong></td>
+                    <td>${getCategoryBadge(week2Data.category)}</td>
+                    <td>
+                        Rp${week2Data.cost.toLocaleString()}<br>
+                        <small class="${getTrendClass(costTrend)}">${costTrend}% dari minggu lalu</small>
+                    </td>
+                    <td>
+                        ${week2Data.result} ${week2Data.type}<br>
+                        <small class="${getTrendClass(resultTrend)}">${resultTrend}% dari minggu lalu</small>
+                    </td>
+                    <td>
+                        ${week2Data.reach.toLocaleString()}<br>
+                        <small class="${getTrendClass(reachTrend)}">${reachTrend}% dari minggu lalu</small>
+                    </td>
+                    <td>
+                        ${getTrendIcon(costTrend)} ${getTrendIcon(resultTrend)} ${getTrendIcon(reachTrend)}
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Tab functionality
+        function showPeriod(period) {
+            // Update active tab
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // For now, just show comparison view
+            // In a more complex version, you could show different views
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            generateComparisonTable();
+        });
+    </script>
+</body>
+</html>
