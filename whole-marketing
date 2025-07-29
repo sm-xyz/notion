@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prinsip Digital Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    .widget-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      padding: 32px;
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .widget {
+      font-size: 1.25em;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .author {
+      margin-top: 18px;
+      font-size: 1em;
+      color: #007acc;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="widget-container">
+    <div class="widget" id="widget"></div>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "Beriklan tanpa riset adalah seperti melempar uang ke jurang. Data adalah pondasi strategi, bukan feeling.", author: "Digital Truth" },
+      { text: "Follower banyak tidak menjamin closing. Fokus ke kualitas traffic dan niat beli.", author: "Conversion 101" },
+      { text: "Brand bukan sekadar logo, tapi persepsi yang terus dibentuk lewat konsistensi pesan dan pengalaman.", author: "Branding Insight" },
+      { text: "Konten viral belum tentu menguntungkan. Pastikan tujuan konten selaras dengan goal bisnis.", author: "Content Strategy" },
+      { text: "Traffic itu vanity, conversion itu sanity. Fokus ke hasil, bukan hanya angka.", author: "Growth Mindset" },
+      { text: "Audience bukan semua orang. Semakin spesifik target, semakin besar kemungkinan closing.", author: "Niche Targeting" },
+      { text: "Iklan bagus bukan soal visual, tapi konversi, lead, dan closing nyata.", author: "Ad Effectiveness" },
+      { text: "Kalau kamu menjual ke semua orang, kamu tidak menjual ke siapa-siapa.", author: "Segmentasi Pasar" },
+      { text: "Funnel bukan teori, tapi alat untuk mengubah perhatian jadi transaksi.", author: "Sales Funnel Basics" },
+      { text: "Database adalah aset digital terpenting; follow-up otomatis menaikkan ROI.", author: "CRM Reality" },
+      { text: "Konten tanpa edukasi dan CTA ibarat brosur kosong: terlihat tapi tak bertindak.", author: "Content Utility" },
+      { text: "Optimasi website bukan pilihan, tapi keharusan. Loading lambat = kehilangan uang.", author: "UX + Speed" },
+      { text: "Produk bagus tidak cukup jika tidak dikomunikasikan dengan tepat.", author: "Positioning Principle" },
+      { text: "Organic reach makin kecil. Paid ads bukan pengganti, tapi penguat strategi konten.", author: "Reach Strategy" },
+      { text: "Audience perlu diyakinkan lebih dari sekali. Retargeting bukan gangguan, tapi reminder cerdas.", author: "Retargeting Rule" },
+      { text: "Bukan algoritma yang bikin gagal, tapi konten dan pesan yang salah arah.", author: "Algorithm Awareness" },
+      { text: "Harga bisa ditiru, database dan relasi pelanggan tidak bisa.", author: "Customer Asset" },
+      { text: "Konten tidak harus ramai, tapi harus relevan dan menggerakkan aksi.", author: "Action-Oriented Content" },
+      { text: "Test dan ukur, bukan tebak dan berharap. Iklan digital bukan sulap, tapi eksperimen berulang.", author: "A/B Testing" },
+      { text: "Lebih baik 100 pelanggan loyal daripada 10.000 pengunjung tanpa arah.", author: "Loyalty Leverage" },
+      { text: "Digital marketing bukan kerja sekali jadi. Ini proses, bukan sprint.", author: "Long Game Thinking" }
+    ];
+
+    const INTERVAL = 60000; // 1 menit
+
+    function displayQuote() {
+      quotes.forEach((quote, i) => {
+        setTimeout(() => {
+          document.getElementById('widget').innerHTML = `
+            <div class="widget">
+              <div>${quote.text}</div>
+              <div class="author">- ${quote.author}</div>
+            </div>
+          `;
+        }, i * INTERVAL);
+      });
+    }
+
+    function displayWidget() {
+      displayQuote();
+      setTimeout(displayWidget, quotes.length * INTERVAL);
+    }
+
+    displayWidget();
+  </script>
+
+</body>
+</html>
