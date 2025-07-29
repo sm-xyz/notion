@@ -13,14 +13,16 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      background: #f9f9f9;
-      color: #333;
+      background: #004aad;
+      color: #ffffff;
     }
 
     .widget-container {
-      background: white;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
       padding: 32px;
       max-width: 700px;
       width: 90%;
@@ -29,16 +31,17 @@
     }
 
     .widget {
-      font-size: 1.25em;
-      line-height: 1.7;
+      font-size: 1.1em;
+      line-height: 1.5;
       opacity: 0;
       animation: fadeIn 1s forwards;
+      color: #ffffff;
     }
 
     .author {
-      margin-top: 18px;
-      font-size: 1em;
-      color: #007acc;
+      margin-top: 16px;
+      font-size: 0.9em;
+      color: #b3d9ff;
       font-weight: 500;
     }
 
@@ -79,7 +82,7 @@
       { text: "Lebih baik 100 pelanggan loyal daripada 10.000 pengunjung tanpa arah.", author: "Loyalty Leverage" }
     ];
 
-    const INTERVAL = 60000; // 1 menit
+    const INTERVAL = 7000; // 7 detik
 
     function displayQuote() {
       quotes.forEach((quote, i) => {
